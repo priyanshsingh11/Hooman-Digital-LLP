@@ -12,7 +12,6 @@ logger = logging.getLogger(__name__)
 MODEL_NAME = "llama3:latest"
 
 # --- Added: Instruction, System, Structured Output, Schema-Constrained, Role, Zero-Shot, Constraint, Contextual, Classification, Adversarial Prompting ---
-
 SYSTEM_PROMPT = """
 You are an expert customer support email classifier for a SaaS company.
 
