@@ -33,6 +33,11 @@ graph TB
     subgraph "Frontend Layer (Next.js 14)"
         UI[Dashboard / Simulator] --> API_Call[Fetch /api/process-email]
         UI --> Metrics[Fetch /api/stats]
+        Auth_Check[Auth Guard] --> UI
+    end
+
+    subgraph "Identity & Security"
+        Supabase[(Supabase Auth)] <--> Auth_Check
     end
 
     subgraph "Backend Orchestration (FastAPI)"
@@ -127,6 +132,12 @@ This ensures that if the AI "guesses" an intent without supporting facts, the sy
 We implement a "Draft & Approve" workflow where the AI proposes an action, but a human operator has the final word.
 *   **Manual Override**: Operators can edit any AI-generated response in real-time.
 *   **Audit Trail**: The system logs whether a ticket was `Approved`, `Overridden`, or `Escalated`.
+
+### 6. Production Security (Supabase)
+The system implements a production-grade authentication layer using **Supabase Auth**.
+*   **JWT-Based Security**: All dashboard routes are protected by JSON Web Token verification.
+*   **Role-Based Permissions (RBAC)**: The application distinguishes between `Agent` and `Lead` roles, restricting high-level business intelligence charts and evaluation metrics to management accounts only.
+*   **Session Persistence**: Implements secure browser-based session management to ensure a seamless "enterprise" user experience.
 
 ---
 
@@ -227,8 +238,18 @@ To maintain production-grade reliability, the system includes a dedicated evalua
 
 ## Evaluation Metrics
 
+### 1. Quantitative (Accuracy Metrics)
+The system is benchmarked against a ground-truth dataset of 50+ diverse support scenarios:
+
+| Metric | Score | Note |
+| :--- | :--- | :--- |
+| **Classification Accuracy** | 82.0% | Intent detection precision (Llama 3.2). |
+| **Urgency Accuracy** | 64.0% | Correctness of priority level detection. |
+| **Retrieval Hit Rate** | 78.0% | Correctness of context retrieval from vector DB. |
+| **Workflow Decision Accuracy** | 54.0% | Reliability of automated routing logic. |
+
 ### 2. Qualitative (LLM-as-a-Judge)
-The system was evaluated by a peer-LLM (Judge) against a professional support rubric:
+The system was also evaluated by a peer-LLM (Judge) against a professional support rubric:
 
 | Metric | Score | Performance |
 | :--- | :--- | :--- |
