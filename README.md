@@ -112,7 +112,7 @@ The system is built on three core engineering pillars:
 We separate Language Processing from Business Logic. While Llama 3.1 handles the semantic understanding, a deterministic Python-based orchestrator makes the final decision on ticket routing.
 
 ### 2. Local-First Inference
-By utilizing Ollama for local LLM execution, Lumen ensures that sensitive customer data (PII) never leaves the internal network.
+By utilizing Ollama for local LLM execution (optimized for Llama 3.2 3B), Lumen ensures that sensitive customer data (PII) never leaves the internal network.
 
 ### 3. Contextual Grounding (RAG)
 To eliminate hallucinations, the system uses a Retrieval Augmented Generation pattern. The AI is only allowed to answer using information retrieved from the local vector database.
@@ -193,7 +193,7 @@ Hooman-Digital-LLP/
 *   Language: Python 3.10+
 *   API Framework: FastAPI
 *   Vector DB: ChromaDB
-*   AI Inference: Ollama (Llama 3.1 8B, Llama 3.2 3B)
+*   AI Inference: Ollama (Llama 3.2 3B - Optimized for Speed)
 *   Embeddings: nomic-embed-text
 
 ---
