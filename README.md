@@ -24,18 +24,98 @@ Lumen follows a modular pipeline design, ensuring each request is classified, gr
 
 ---
 
+## Full System & Codebase Mapping
+
+The following diagram illustrates the complete project ecosystem, showing how the frontend, backend services, and vector database interact to provide a seamless automation experience.
+
+```mermaid
+graph TB
+    subgraph "Frontend Layer (Next.js 14)"
+        UI[Dashboard / Simulator] --> API_Call[Fetch /api/process-email]
+        UI --> Metrics[Fetch /api/stats]
+    end
+
+    subgraph "Backend Orchestration (FastAPI)"
+        API_Call --> Main[main.py Entry Point]
+        Main --> Orchestrator[workflow/full_agent.py]
+        
+        subgraph "AI Core Services"
+            Orchestrator --> Classifier[services/classifier.py]
+            Orchestrator --> RAG_Service[rag/retriever.py]
+            Orchestrator --> Generator[services/response_generator.py]
+        end
+        
+        subgraph "Logic & Decisioning"
+            Orchestrator --> Logic[workflow/workflow.py]
+        end
+    end
+
+    subgraph "Data & Knowledge Layer"
+        RAG_Service --> VectorDB[(ChromaDB)]
+        VectorDB -.-> Embeds[nomic-embed-text]
+        Docs[data/help_docs/*.txt] --> Ingest[rag/ingest.py]
+        Ingest --> VectorDB
+    end
+
+    subgraph "Intelligence Layer (Ollama)"
+        Classifier --> LLM_8B[Llama 3.1 8B]
+        Generator --> LLM_8B
+    end
+
+    subgraph "Quality Assurance & Evaluation"
+        Eval_Suite[evals/evaluate_workflow.py] --> Orchestrator
+        Eval_Suite --> GroundTruth[data/emails.json]
+    end
+
+    Main --> History[(data/history.json)]
+    History --> Metrics
+```
+
+---
+
+## Deep System Design & Technical Implementation
+
+This section details the low-level implementation of each component and how they interact within the Python/FastAPI ecosystem.
+
+### 1. NLP Intent Classification (`EmailClassifier`)
+The classification layer uses a zero-shot prompting strategy on Llama 3.1.
+*   **Prompt Engineering**: We use a system-level role definition that constrains the LLM to output ONLY a JSON object. This eliminates the need for expensive post-processing or regex cleaning.
+*   **Data Structure**: The `classify` function returns a dictionary with `category`, `urgency`, and `sentiment`.
+*   **Error Handling**: If the LLM fails to return valid JSON (a common issue with smaller models), the code implements a **graceful fallback** to a `technical_issue` category to ensure the pipeline doesn't crash.
+
+### 2. Semantic Vector Space (`RAG System`)
+The retrieval system is built on top of ChromaDB and the `nomic-embed-text` model.
+*   **Embedding Logic**: Documents are transformed into 768-dimensional vectors. When a query comes in, we perform a **K-Nearest Neighbors (KNN)** search.
+*   **Thresholding**: We don't just take any result; we calculate a **Retrieval Fit Score**. If the similarity distance is too high, the system flags the result as "low confidence," which the Orchestrator uses to decide whether to trust the AI response.
+*   **Persistence**: The vector database is stored locally in the `/db` directory, allowing for instant search without external API calls.
+
+### 3. The Orchestration Logic (`AIWorkflowOrchestrator`)
+This is the core "Business Brain" that sits between the AI and the Customer.
+*   **Deterministic Gates**: The system uses hardcoded logic gates. For example:
+    *   `if sentiment == "frustrated" -> escalate_human`
+    *   `if category == "security_concern" -> route_security_team`
+*   **Hybrid Decisioning**: The AI suggests the intent, but the Python code decides the action. This ensures 100% compliance with company policies (e.g., an AI cannot accidentally authorize a $5,000 refund).
+
+### 4. Grounded Response Generation (`ResponseGenerator`)
+The final response is created through **Grounded Prompting**.
+*   **Context Injection**: The retrieved document snippets are injected directly into the LLM's system prompt.
+*   **Anti-Hallucination Constraints**: The LLM is explicitly instructed: *"If the answer is not in the context, do not make it up."*
+*   **Strict Filtering**: A post-generation regex layer scrubs the text for any leaked technical internal labels like `escalate_human:` to ensure a clean customer experience.
+
+---
+
 ## System Design Philosophy
 
 The system is built on three core engineering pillars:
 
 ### 1. Hybrid Orchestration
-We separate Language Processing from Business Logic. While Llama 3.1 handles the semantic understanding, a deterministic Python-based orchestrator makes the final decision on ticket routing. This prevents "AI Drift" where a model might accidentally grant a refund against company policy.
+We separate Language Processing from Business Logic. While Llama 3.1 handles the semantic understanding, a deterministic Python-based orchestrator makes the final decision on ticket routing.
 
 ### 2. Local-First Inference
-By utilizing Ollama for local LLM execution, Lumen ensures that sensitive customer data (PII) never leaves the internal network. This is critical for SOC2 and GDPR compliance in enterprise support environments.
+By utilizing Ollama for local LLM execution, Lumen ensures that sensitive customer data (PII) never leaves the internal network.
 
 ### 3. Contextual Grounding (RAG)
-To eliminate hallucinations, the system uses a Retrieval Augmented Generation pattern. The AI is only allowed to answer using information retrieved from the local vector database (ChromaDB), which is populated with verified help documentation.
+To eliminate hallucinations, the system uses a Retrieval Augmented Generation pattern. The AI is only allowed to answer using information retrieved from the local vector database.
 
 ---
 
@@ -45,24 +125,46 @@ To eliminate hallucinations, the system uses a Retrieval Augmented Generation pa
 Hooman-Digital-LLP/
 ├── backend/
 │   ├── app/
-│   │   ├── evals/              # Evaluation suite (Accuracy & Retrieval Hit Rate)
-│   │   ├── rag/                # ChromaDB integration and Vector search
-│   │   ├── services/           # AI services (Classifier, Response Generator)
-│   │   ├── workflow/           # Orchestration logic and full agent pipeline
-│   │   └── main.py             # FastAPI entry point
-│   └── requirements.txt        # Python dependencies
+│   │   ├── evals/
+│   │   │   ├── evaluate_classifier.py    # Benchmarks the LLM intent detection
+│   │   │   ├── evaluate_retrieval.py     # Measures RAG search accuracy
+│   │   │   ├── evaluate_workflow.py      # Tests end-to-end decision logic
+│   │   │   └── metrics_utils.py          # Math utilities for scoring
+│   │   ├── rag/
+│   │   │   ├── ingest.py                 # Document processing & vectorization
+│   │   │   ├── retriever.py              # ChromaDB search interface
+│   │   │   └── test_retrieval.py         # Unit tests for RAG
+│   │   ├── services/
+│   │   │   ├── classifier.py             # Llama 3.1 intent classification
+│   │   │   └── response_generator.py     # Grounded email synthesis
+│   │   ├── workflow/
+│   │   │   ├── workflow.py               # Deterministic business logic
+│   │   │   ├── full_agent.py             # Main orchestrator pipeline
+│   │   │   └── test_full_agent.py        # Pipeline validation scripts
+│   │   └── main.py                       # FastAPI application & API routes
+│   └── requirements.txt                  # Python dependency list
 ├── frontend/
 │   ├── src/
-│   │   ├── components/         # React dashboard components
-│   │   ├── app/                # Next.js App Router (Main UI)
-│   │   └── types/              # TypeScript definitions
-│   └── package.json            # Node.js dependencies
+│   │   ├── components/                   # UI Components
+│   │   │   ├── ClassificationCard.tsx    # Intent visualization
+│   │   │   ├── RetrievalPanel.tsx        # RAG result display
+│   │   │   ├── ResponseViewer.tsx        # AI output viewer
+│   │   │   ├── MetricsDashboard.tsx      # Performance charts
+│   │   │   └── ActivityLogs.tsx          # Real-time event log
+│   │   ├── app/
+│   │   │   ├── page.tsx                  # Main Dashboard entry
+│   │   │   └── layout.tsx                # Next.js global layout
+│   │   └── types/
+│   │       └── index.ts                  # TypeScript shared interfaces
+│   └── package.json                      # Node.js dependency list
 ├── data/
-│   ├── help_docs/              # Source documentation for RAG
-│   ├── emails.json             # Dataset for evaluation
-│   └── history.json            # Local persistent logs (Git ignored)
-├── db/                         # ChromaDB persistent storage
-└── README.md                   # System documentation
+│   ├── help_docs/                        # Knowledge base (txt files)
+│   ├── emails.json                       # Evaluation dataset
+│   ├── history.json                      # Local log store (ignored)
+│   └── customer_data.json                # User context for RAG
+├── db/                                   # Persistent ChromaDB storage
+├── .gitignore                            # Version control exclusions
+└── README.md                             # Documentation
 ```
 
 ---
@@ -93,18 +195,6 @@ Hooman-Digital-LLP/
 *   Vector DB: ChromaDB
 *   AI Inference: Ollama (Llama 3.1 8B, Llama 3.2 3B)
 *   Embeddings: nomic-embed-text
-
----
-
-## Workflow Explanation
-
-The Lumen pipeline processes every interaction through five distinct phases:
-
-1.  **Classification**: The raw email is analyzed by Llama 3.1 to identify the "User Intent." We extract structured JSON containing category, urgency, and sentiment.
-2.  **Retrieval**: The system performs a vector search in ChromaDB to find the most relevant help documentation, calculating a "Retrieval Fit Score."
-3.  **Routing**: The Orchestrator applies business rules. For example, if the category is "Security" or urgency is "High," it bypasses automation and routes to a human agent.
-4.  **Response Generation**: If automated, the generator synthesizes a reply grounded strictly in the retrieved documents, avoiding hallucinations.
-5.  **Hybrid Orchestration**: This "Hybrid" approach ensures that while the AI handles the language, the business maintains control over the Decisions.
 
 ---
 
