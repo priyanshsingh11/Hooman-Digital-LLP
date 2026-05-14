@@ -72,7 +72,7 @@ Continuous improvement is driven by our automated evaluation suite.
 | Metric | Score | Note |
 | :--- | :--- | :--- |
 | **Classification Accuracy** | 82.0% | Success in identifying intent categories. |
-| **Retrieval Hit Rate** | 62.5% | Percentage of queries where correct docs were found. |
+| **Retrieval Hit Rate** | 78.0% | Percentage of queries where correct docs were found. |
 | **Workflow Decision Accuracy** | 62.0% | Correctness of the final routing decision. |
 
 ### Engineering Insights:
