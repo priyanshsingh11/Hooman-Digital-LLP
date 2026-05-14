@@ -1,0 +1,21 @@
+# Core RAG
+chromadb>=0.4.0
+ollama>=0.1.0
+
+# API & Web
+fastapi
+uvicorn
+pydantic
+pydantic-settings
+
+# Database & Tools
+psycopg2-binary
+sqlalchemy
+python-dotenv
+pandas
+requests
+
+# Development/Evals
+pytest
+numpy
+tqdm
