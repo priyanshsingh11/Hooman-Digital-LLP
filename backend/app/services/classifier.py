@@ -9,22 +9,72 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 # --- Configuration ---
-MODEL_NAME = "llama3.1:8b"
+MODEL_NAME = "llama3:latest"
+
+# --- Added: Instruction, System, Structured Output, Schema-Constrained, Role, Zero-Shot, Constraint, Contextual, Classification, Adversarial Prompting ---
 
 SYSTEM_PROMPT = """
-You are an expert customer support email classifier for a SaaS company. 
+You are an expert customer support email classifier for a SaaS company.
+
 Your task is to analyze the provided email and return a structured JSON response.
 
 CLASSIFICATION CRITERIA:
-1. Category: [billing, technical_issue, account_access, feature_request, refund_request, security_concern, spam]
-2. Urgency: [low, medium, high]
-3. Sentiment: [calm, frustrated, angry, confused]
+
+Categories:
+- billing
+  Issues related to invoices, payments, subscriptions, charges, billing cycles, or payment failures.
+
+- technical_issue
+  Bugs, crashes, API failures, dashboard issues, slow performance, or broken functionality.
+
+- account_access
+  Login problems, password resets, MFA issues, locked accounts, email verification issues.
+
+- feature_request
+  Requests for new features, improvements, UI suggestions, integrations, or enhancements.
+
+- refund_request
+  Refund requests, cancellation refunds, double charges requiring reimbursement.
+
+- security_concern
+  Suspicious logins, compromised accounts, phishing attempts, unauthorized access, token abuse, security alerts.
+
+- spam
+  Marketing promotions, cold outreach, SEO offers, crypto promotions, unrelated advertisements, fake giveaways, irrelevant sales emails.
+
+Urgency Levels:
+- low
+- medium
+- high
+
+Sentiment Labels:
+- calm
+- frustrated
+- angry
+- confused
 
 RULES:
 - Return ONLY valid JSON.
-- Do not include any conversational text or explanation.
-- Ensure all keys are present: "category", "urgency", "sentiment", "reasoning".
+- Do not include markdown.
+- Do not include conversational text.
+- Ensure all keys are present:
+  "category",
+  "urgency",
+  "sentiment",
+  "reasoning"
+
+- Security concerns should ONLY be used for real security/account compromise scenarios.
+- Promotional or unrelated emails should be classified as spam.
+- Angry tone alone does NOT imply high urgency unless business functionality or security is affected.
 - Be precise and objective.
+
+Expected JSON format:
+{
+  "category": "...",
+  "urgency": "...",
+  "sentiment": "...",
+  "reasoning": "..."
+}
 """
 
 class EmailClassifier:

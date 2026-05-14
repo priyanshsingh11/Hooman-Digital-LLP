@@ -36,6 +36,11 @@ def run_classification_suite():
             "id": "SPAM",
             "subject": "Exclusive offer for your business!!!",
             "body": "Increase your leads by 1000% with our new AI marketing tool. Click here to claim your discount now: http://spam-link.biz/win"
+        },
+        {
+            "id": "GOOD_REVIEW",
+            "subject": "Love the new dashboard updates!",
+            "body": "Hi team, I just wanted to say the new analytics dashboard is amazing. It has saved me hours of work this week. Keep up the great work!"
         }
     ]
 
