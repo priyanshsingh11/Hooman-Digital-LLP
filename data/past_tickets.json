@@ -1,0 +1,302 @@
+[
+    {
+        "ticket_id": 5001,
+        "customer_email": "nina.patel92@gmail.com",
+        "issue": "Customer reported being charged twice for a monthly Pro subscription renewal.",
+        "category": "billing",
+        "resolution": "Verified duplicate transaction in Stripe logs and refunded the second charge within 24 hours.",
+        "status": "resolved",
+        "created_at": "2025-11-03T09:14:22Z",
+        "resolved_at": "2025-11-04T13:27:11Z"
+    },
+    {
+        "ticket_id": 5002,
+        "customer_email": "chris.martin@acme.io",
+        "issue": "Unable to log in after resetting password multiple times.",
+        "category": "account_access",
+        "resolution": "Found stale authentication session causing login failures. Cleared sessions and guided customer through a successful reset.",
+        "status": "resolved",
+        "created_at": "2025-10-12T18:02:41Z",
+        "resolved_at": "2025-10-12T19:44:03Z"
+    },
+    {
+        "ticket_id": 5003,
+        "customer_email": "laura.jensen@northpeaktech.com",
+        "issue": "Enterprise dashboard exports were timing out for reports larger than 500MB.",
+        "category": "technical_issue",
+        "resolution": "Engineering increased export worker memory allocation and optimized query batching.",
+        "status": "resolved",
+        "created_at": "2025-09-18T06:50:13Z",
+        "resolved_at": "2025-09-20T15:11:27Z"
+    },
+    {
+        "ticket_id": 5004,
+        "customer_email": "miguel.herrera88@yahoo.com",
+        "issue": "Requested refund after forgetting to cancel annual subscription before renewal.",
+        "category": "refund_request",
+        "resolution": "Approved prorated refund as account usage had been inactive for over 60 days.",
+        "status": "closed",
+        "created_at": "2025-08-09T11:09:33Z",
+        "resolved_at": "2025-08-10T08:01:14Z"
+    },
+    {
+        "ticket_id": 5005,
+        "customer_email": "a.khan@blueorbitlabs.ai",
+        "issue": "Customer disputed unexpected overage charges tied to API usage spikes.",
+        "category": "billing",
+        "resolution": "Reviewed usage analytics with customer and applied a one-time courtesy credit due to unclear quota notifications.",
+        "status": "resolved",
+        "created_at": "2025-11-11T14:55:48Z",
+        "resolved_at": "2025-11-13T10:42:02Z"
+    },
+    {
+        "ticket_id": 5006,
+        "customer_email": "dwu@zenithhealthsystems.com",
+        "issue": "Security team detected unfamiliar login attempts from overseas IP addresses.",
+        "category": "security_concern",
+        "resolution": "Forced password resets for affected users, revoked active sessions, and enabled mandatory MFA enforcement.",
+        "status": "escalated",
+        "created_at": "2025-07-22T03:40:51Z",
+        "resolved_at": "2025-07-24T21:10:09Z"
+    },
+    {
+        "ticket_id": 5007,
+        "customer_email": "oliver.grant@brightcore.io",
+        "issue": "Webhook delivery failures causing downstream automation delays.",
+        "category": "api_issue",
+        "resolution": "Identified malformed retry headers in webhook payloads and deployed a backend patch.",
+        "status": "resolved",
+        "created_at": "2025-10-29T05:33:02Z",
+        "resolved_at": "2025-10-30T16:19:44Z"
+    },
+    {
+        "ticket_id": 5008,
+        "customer_email": "sofia.ramirez@novaforge.com",
+        "issue": "Customer stated invoices were missing VAT information required for accounting compliance.",
+        "category": "billing",
+        "resolution": "Updated billing profile and regenerated historical invoices with VAT details included.",
+        "status": "resolved",
+        "created_at": "2025-09-02T12:48:21Z",
+        "resolved_at": "2025-09-02T17:28:09Z"
+    },
+    {
+        "ticket_id": 5009,
+        "customer_email": "fatima.alhassan@orionlogistics.ae",
+        "issue": "Enterprise admin requested emergency deletion of a mistakenly shared workspace.",
+        "category": "security_concern",
+        "resolution": "Ticket escalated to security operations team for compliance verification and permanent deletion handling.",
+        "status": "escalated",
+        "created_at": "2025-06-15T01:17:55Z",
+        "resolved_at": "2025-06-17T14:49:36Z"
+    },
+    {
+        "ticket_id": 5010,
+        "customer_email": "jonas.becker@cloudspire.de",
+        "issue": "Customer was confused about why SSO features were unavailable on Pro plan.",
+        "category": "feature_confusion",
+        "resolution": "Explained SSO availability is limited to Enterprise tier and shared upgrade documentation.",
+        "status": "closed",
+        "created_at": "2025-05-20T10:05:47Z",
+        "resolved_at": "2025-05-20T12:21:54Z"
+    },
+    {
+        "ticket_id": 5011,
+        "customer_email": "haruka.sato@mirailabs.jp",
+        "issue": "Japanese characters appeared corrupted in exported PDF reports.",
+        "category": "technical_issue",
+        "resolution": "Updated export renderer to support UTF-8 font embedding for multilingual reports.",
+        "status": "resolved",
+        "created_at": "2025-08-17T07:42:09Z",
+        "resolved_at": "2025-08-19T13:07:48Z"
+    },
+    {
+        "ticket_id": 5012,
+        "customer_email": "kevin.obrien@gmail.com",
+        "issue": "Past due account remained inaccessible after payment was completed.",
+        "category": "billing",
+        "resolution": "Billing sync job had failed. Manually restored account access after payment confirmation.",
+        "status": "resolved",
+        "created_at": "2025-09-25T15:13:27Z",
+        "resolved_at": "2025-09-25T16:44:55Z"
+    },
+    {
+        "ticket_id": 5013,
+        "customer_email": "l.petrova@quantummesh.io",
+        "issue": "Customer accidentally deleted a dashboard and requested recovery.",
+        "category": "technical_issue",
+        "resolution": "Recovered dashboard from nightly backup snapshot and restored permissions.",
+        "status": "resolved",
+        "created_at": "2025-10-05T09:22:03Z",
+        "resolved_at": "2025-10-05T20:11:18Z"
+    },
+    {
+        "ticket_id": 5014,
+        "customer_email": "marcus.reed@vertexindustrial.com",
+        "issue": "Scheduled sync jobs failed repeatedly after API version upgrade.",
+        "category": "api_issue",
+        "resolution": "Engineering team identified deprecated request fields and provided updated SDK migration steps.",
+        "status": "escalated",
+        "created_at": "2025-07-30T04:09:41Z",
+        "resolved_at": "2025-08-02T18:30:50Z"
+    },
+    {
+        "ticket_id": 5015,
+        "customer_email": "nina.patel92@gmail.com",
+        "issue": "Customer could not locate cancellation settings in the updated billing UI.",
+        "category": "feature_confusion",
+        "resolution": "Shared step-by-step cancellation instructions and flagged UI discoverability feedback to product team.",
+        "status": "closed",
+        "created_at": "2025-11-07T08:14:12Z",
+        "resolved_at": "2025-11-07T09:55:37Z"
+    },
+    {
+        "ticket_id": 5016,
+        "customer_email": "thiago.costa@altavision.com.br",
+        "issue": "Reports API intermittently returned HTTP 500 responses during peak usage.",
+        "category": "api_issue",
+        "resolution": "Backend autoscaling thresholds were adjusted and error rates normalized after deployment.",
+        "status": "resolved",
+        "created_at": "2025-10-14T13:39:50Z",
+        "resolved_at": "2025-10-15T06:45:10Z"
+    },
+    {
+        "ticket_id": 5017,
+        "customer_email": "emilycarter.designs@gmail.com",
+        "issue": "Requested refund after accidental upgrade from Free to Pro plan.",
+        "category": "refund_request",
+        "resolution": "Processed full refund because account activity showed no feature usage after upgrade.",
+        "status": "resolved",
+        "created_at": "2025-04-03T16:18:33Z",
+        "resolved_at": "2025-04-04T09:00:11Z"
+    },
+    {
+        "ticket_id": 5018,
+        "customer_email": "ravi.deshmukh@neurogrid.ai",
+        "issue": "Enterprise customer raised concern about AI assistant exposing another tenant's metadata.",
+        "category": "security_concern",
+        "resolution": "Escalated to security engineering and isolated autocomplete caching issue affecting shared inference layer.",
+        "status": "escalated",
+        "created_at": "2025-09-09T02:52:14Z",
+        "resolved_at": "2025-09-12T19:34:58Z"
+    },
+    {
+        "ticket_id": 5019,
+        "customer_email": "priya.menon@gmail.com",
+        "issue": "User reported mobile app notifications not arriving on Android device.",
+        "category": "technical_issue",
+        "resolution": "Resolved issue by resetting stale push notification token on backend.",
+        "status": "resolved",
+        "created_at": "2025-11-01T07:27:28Z",
+        "resolved_at": "2025-11-01T11:16:45Z"
+    },
+    {
+        "ticket_id": 5020,
+        "customer_email": "oliver.grant@brightcore.io",
+        "issue": "Customer requested clarification on API rate limits for batch exports.",
+        "category": "feature_confusion",
+        "resolution": "Provided detailed documentation and example rate limit headers from production responses.",
+        "status": "closed",
+        "created_at": "2025-06-21T18:44:09Z",
+        "resolved_at": "2025-06-22T06:01:50Z"
+    },
+    {
+        "ticket_id": 5021,
+        "customer_email": "a.khan@blueorbitlabs.ai",
+        "issue": "Unable to receive MFA verification emails after switching domains.",
+        "category": "account_access",
+        "resolution": "Customer's domain had strict spam filtering rules blocking verification emails. Recommended allowlisting support domain.",
+        "status": "resolved",
+        "created_at": "2025-08-11T05:18:44Z",
+        "resolved_at": "2025-08-11T13:26:31Z"
+    },
+    {
+        "ticket_id": 5022,
+        "customer_email": "dwu@zenithhealthsystems.com",
+        "issue": "Customer requested audit logs for compliance review covering the last 12 months.",
+        "category": "security_concern",
+        "resolution": "Generated secure audit export package and shared via encrypted delivery link.",
+        "status": "closed",
+        "created_at": "2025-05-06T03:58:16Z",
+        "resolved_at": "2025-05-08T10:44:22Z"
+    },
+    {
+        "ticket_id": 5023,
+        "customer_email": "laura.jensen@northpeaktech.com",
+        "issue": "Billing administrator disputed additional seat charges after employee offboarding.",
+        "category": "billing",
+        "resolution": "Confirmed delayed seat sync issue and credited overbilled seats from previous cycle.",
+        "status": "resolved",
+        "created_at": "2025-10-02T14:11:37Z",
+        "resolved_at": "2025-10-03T09:18:49Z"
+    },
+    {
+        "ticket_id": 5024,
+        "customer_email": "fatima.alhassan@orionlogistics.ae",
+        "issue": "Customer unable to access admin panel after enabling mandatory SSO enforcement.",
+        "category": "account_access",
+        "resolution": "Escalated to identity engineering team due to SAML assertion mismatch issue.",
+        "status": "escalated",
+        "created_at": "2025-11-05T00:44:52Z",
+        "resolved_at": "2025-11-06T16:13:02Z"
+    },
+    {
+        "ticket_id": 5025,
+        "customer_email": "miguel.herrera88@yahoo.com",
+        "issue": "Requested permanent account deletion under privacy regulations.",
+        "category": "security_concern",
+        "resolution": "Completed deletion workflow and confirmed data purge after mandatory retention period review.",
+        "status": "closed",
+        "created_at": "2025-03-28T09:31:17Z",
+        "resolved_at": "2025-03-31T15:20:43Z"
+    },
+    {
+        "ticket_id": 5026,
+        "customer_email": "kevin.obrien@gmail.com",
+        "issue": "Customer stated payment page froze during checkout and charged card without upgrading account.",
+        "category": "billing",
+        "resolution": "Verified payment authorization without account provisioning and manually activated subscription.",
+        "status": "resolved",
+        "created_at": "2025-09-19T12:40:03Z",
+        "resolved_at": "2025-09-19T14:55:08Z"
+    },
+    {
+        "ticket_id": 5027,
+        "customer_email": "haruka.sato@mirailabs.jp",
+        "issue": "Customer confused about workspace-level retention settings after policy update.",
+        "category": "feature_confusion",
+        "resolution": "Explained new retention controls introduced in Enterprise settings and linked updated documentation.",
+        "status": "closed",
+        "created_at": "2025-10-27T02:03:28Z",
+        "resolved_at": "2025-10-27T07:17:52Z"
+    },
+    {
+        "ticket_id": 5028,
+        "customer_email": "ravi.deshmukh@neurogrid.ai",
+        "issue": "Enterprise API integrations experienced latency spikes exceeding SLA thresholds.",
+        "category": "api_issue",
+        "resolution": "Traffic imbalance in EU region was corrected by rerouting workloads and increasing compute allocation.",
+        "status": "escalated",
+        "created_at": "2025-08-02T11:26:39Z",
+        "resolved_at": "2025-08-04T20:48:15Z"
+    },
+    {
+        "ticket_id": 5029,
+        "customer_email": "emilycarter.designs@gmail.com",
+        "issue": "Customer accidentally uploaded sensitive files to public workspace.",
+        "category": "security_concern",
+        "resolution": "Removed public links, revoked cached previews, and advised customer on private sharing settings.",
+        "status": "resolved",
+        "created_at": "2025-07-17T13:09:22Z",
+        "resolved_at": "2025-07-17T17:30:41Z"
+    },
+    {
+        "ticket_id": 5030,
+        "customer_email": "sofia.ramirez@novaforge.com",
+        "issue": "Customer reported inconsistent seat counts between billing portal and admin dashboard.",
+        "category": "billing",
+        "resolution": "Resolved synchronization mismatch caused by delayed provisioning jobs and refreshed billing cache.",
+        "status": "resolved",
+        "created_at": "2025-11-09T08:57:51Z",
+        "resolved_at": "2025-11-10T12:12:27Z"
+    }
+]

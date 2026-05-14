@@ -1,0 +1,43 @@
+Lumen API Rate Limits
+
+Lumen applies API rate limits to maintain platform stability, prevent abuse, and ensure fair usage across customers.
+
+Rate limits vary by subscription tier:
+- Free: 60 requests per minute
+- Pro: 600 requests per minute
+- Enterprise: Custom limits based on contract terms
+
+Burst traffic beyond allocated limits may trigger temporary throttling. Customers exceeding limits receive HTTP 429 responses.
+
+Standard API headers include:
+- X-RateLimit-Limit
+- X-RateLimit-Remaining
+- X-RateLimit-Reset
+
+Recommended best practices:
+- Implement exponential backoff retries
+- Avoid aggressive polling loops
+- Cache repeated requests when possible
+- Batch large exports during off-peak hours
+
+Large export jobs and asynchronous report generation endpoints may use separate concurrency restrictions.
+
+Excessive abuse detection may temporarily suspend API tokens even if requests technically remain below published limits. Examples include:
+- Distributed scraping activity
+- Automated credential testing
+- Rapid token cycling
+- High-frequency failed authentication attempts
+
+Enterprise customers may request temporary limit increases for migrations, imports, or scheduled data syncs. Requests should be submitted at least 48 hours in advance.
+
+API tokens are scoped to workspace permissions. Rotating API keys immediately invalidates previous tokens.
+
+If customers experience unexplained HTTP 429 responses:
+1. Review application retry logic
+2. Verify parallel request volume
+3. Check whether multiple integrations share the same API key
+4. Inspect response headers for reset timing
+
+Lumen does not guarantee unlimited throughput even for Enterprise customers. Infrastructure protection systems may temporarily restrict traffic during incidents affecting overall platform stability.
+
+Webhook delivery retries are separate from standard API rate limits. Failed webhook events are retried automatically for up to 24 hours before expiration.

@@ -1,0 +1,222 @@
+[
+  {
+    "customer_id": 1001,
+    "name": "Nina Patel",
+    "email": "nina.patel92@gmail.com",
+    "tier": "pro",
+    "subscription_status": "active",
+    "joined_date": "2024-03-18",
+    "country": "India",
+    "previous_ticket_count": 4,
+    "company_name": ""
+  },
+  {
+    "customer_id": 1002,
+    "name": "Chris Martin",
+    "email": "chris.martin@acme.io",
+    "tier": "free",
+    "subscription_status": "trial",
+    "joined_date": "2025-01-07",
+    "country": "United States",
+    "previous_ticket_count": 1,
+    "company_name": "Acme Analytics"
+  },
+  {
+    "customer_id": 1003,
+    "name": "Laura Jensen",
+    "email": "laura.jensen@northpeaktech.com",
+    "tier": "enterprise",
+    "subscription_status": "active",
+    "joined_date": "2022-09-11",
+    "country": "Canada",
+    "previous_ticket_count": 38,
+    "company_name": "NorthPeak Technologies"
+  },
+  {
+    "customer_id": 1004,
+    "name": "Miguel Herrera",
+    "email": "miguel.herrera88@yahoo.com",
+    "tier": "free",
+    "subscription_status": "cancelled",
+    "joined_date": "2023-11-02",
+    "country": "Mexico",
+    "previous_ticket_count": 6,
+    "company_name": ""
+  },
+  {
+    "customer_id": 1005,
+    "name": "Aisha Khan",
+    "email": "a.khan@blueorbitlabs.ai",
+    "tier": "pro",
+    "subscription_status": "past_due",
+    "joined_date": "2024-06-21",
+    "country": "United Kingdom",
+    "previous_ticket_count": 9,
+    "company_name": "Blue Orbit Labs"
+  },
+  {
+    "customer_id": 1006,
+    "name": "Daniel Wu",
+    "email": "dwu@zenithhealthsystems.com",
+    "tier": "enterprise",
+    "subscription_status": "active",
+    "joined_date": "2021-04-30",
+    "country": "Singapore",
+    "previous_ticket_count": 57,
+    "company_name": "Zenith Health Systems"
+  },
+  {
+    "customer_id": 1007,
+    "name": "Priya Menon",
+    "email": "priya.menon@gmail.com",
+    "tier": "free",
+    "subscription_status": "active",
+    "joined_date": "2025-02-14",
+    "country": "India",
+    "previous_ticket_count": 0,
+    "company_name": ""
+  },
+  {
+    "customer_id": 1008,
+    "name": "Oliver Grant",
+    "email": "oliver.grant@brightcore.io",
+    "tier": "pro",
+    "subscription_status": "active",
+    "joined_date": "2023-08-09",
+    "country": "Australia",
+    "previous_ticket_count": 12,
+    "company_name": "BrightCore"
+  },
+  {
+    "customer_id": 1009,
+    "name": "Sofia Ramirez",
+    "email": "sofia.ramirez@novaforge.com",
+    "tier": "enterprise",
+    "subscription_status": "past_due",
+    "joined_date": "2022-01-19",
+    "country": "Spain",
+    "previous_ticket_count": 44,
+    "company_name": "NovaForge"
+  },
+  {
+    "customer_id": 1010,
+    "name": "Ethan Brooks",
+    "email": "ethan.brooks77@outlook.com",
+    "tier": "free",
+    "subscription_status": "trial",
+    "joined_date": "2025-03-03",
+    "country": "United States",
+    "previous_ticket_count": 2,
+    "company_name": ""
+  },
+  {
+    "customer_id": 1011,
+    "name": "Fatima Al-Hassan",
+    "email": "fatima.alhassan@orionlogistics.ae",
+    "tier": "enterprise",
+    "subscription_status": "active",
+    "joined_date": "2020-12-15",
+    "country": "United Arab Emirates",
+    "previous_ticket_count": 63,
+    "company_name": "Orion Logistics"
+  },
+  {
+    "customer_id": 1012,
+    "name": "Jonas Becker",
+    "email": "jonas.becker@cloudspire.de",
+    "tier": "pro",
+    "subscription_status": "cancelled",
+    "joined_date": "2023-02-27",
+    "country": "Germany",
+    "previous_ticket_count": 15,
+    "company_name": "CloudSpire GmbH"
+  },
+  {
+    "customer_id": 1013,
+    "name": "Haruka Sato",
+    "email": "haruka.sato@mirailabs.jp",
+    "tier": "enterprise",
+    "subscription_status": "active",
+    "joined_date": "2021-07-08",
+    "country": "Japan",
+    "previous_ticket_count": 29,
+    "company_name": "Mirai Labs"
+  },
+  {
+    "customer_id": 1014,
+    "name": "Kevin O'Brien",
+    "email": "kevin.obrien@gmail.com",
+    "tier": "free",
+    "subscription_status": "past_due",
+    "joined_date": "2024-09-12",
+    "country": "Ireland",
+    "previous_ticket_count": 7,
+    "company_name": ""
+  },
+  {
+    "customer_id": 1015,
+    "name": "Lina Petrova",
+    "email": "l.petrova@quantummesh.io",
+    "tier": "pro",
+    "subscription_status": "active",
+    "joined_date": "2023-10-25",
+    "country": "Poland",
+    "previous_ticket_count": 5,
+    "company_name": "QuantumMesh"
+  },
+  {
+    "customer_id": 1016,
+    "name": "Marcus Reed",
+    "email": "marcus.reed@vertexindustrial.com",
+    "tier": "enterprise",
+    "subscription_status": "active",
+    "joined_date": "2019-06-17",
+    "country": "United States",
+    "previous_ticket_count": 81,
+    "company_name": "Vertex Industrial"
+  },
+  {
+    "customer_id": 1017,
+    "name": "Ananya Roy",
+    "email": "ananya.roy@freelancehub.in",
+    "tier": "pro",
+    "subscription_status": "trial",
+    "joined_date": "2025-04-01",
+    "country": "India",
+    "previous_ticket_count": 1,
+    "company_name": "FreelanceHub"
+  },
+  {
+    "customer_id": 1018,
+    "name": "Thiago Costa",
+    "email": "thiago.costa@altavision.com.br",
+    "tier": "enterprise",
+    "subscription_status": "past_due",
+    "joined_date": "2022-05-23",
+    "country": "Brazil",
+    "previous_ticket_count": 51,
+    "company_name": "AltaVision"
+  },
+  {
+    "customer_id": 1019,
+    "name": "Emily Carter",
+    "email": "emilycarter.designs@gmail.com",
+    "tier": "free",
+    "subscription_status": "cancelled",
+    "joined_date": "2023-04-06",
+    "country": "Canada",
+    "previous_ticket_count": 3,
+    "company_name": ""
+  },
+  {
+    "customer_id": 1020,
+    "name": "Ravi Deshmukh",
+    "email": "ravi.deshmukh@neurogrid.ai",
+    "tier": "enterprise",
+    "subscription_status": "active",
+    "joined_date": "2020-08-28",
+    "country": "India",
+    "previous_ticket_count": 72,
+    "company_name": "NeuroGrid AI"
+  }
+]

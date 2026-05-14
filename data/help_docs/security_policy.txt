@@ -1,0 +1,49 @@
+Lumen Security Policy
+
+Lumen is designed with layered security controls intended to protect customer workspaces, API integrations, and stored data.
+
+Core security measures include:
+- Encryption in transit using TLS 1.2+
+- Encryption at rest for customer data
+- Role-based access controls
+- Multi-Factor Authentication (MFA)
+- Audit logging for Enterprise workspaces
+- Continuous infrastructure monitoring
+
+Customers are responsible for securing their account credentials and maintaining appropriate internal access controls.
+
+Suspicious activity detection:
+Lumen automatically monitors for unusual login behavior, repeated failed authentication attempts, and abnormal API usage patterns. Security systems may temporarily lock accounts or revoke sessions if suspicious behavior is detected.
+
+If customers suspect account compromise:
+1. Reset passwords immediately
+2. Revoke active sessions
+3. Rotate API keys
+4. Enable or enforce MFA
+5. Contact Lumen Security Support
+
+Enterprise workspaces may enable:
+- SAML SSO
+- SCIM provisioning
+- IP allowlists
+- Session expiration policies
+- Advanced audit exports
+
+Lumen employees do not have unrestricted access to customer data. Access requests for troubleshooting require approval workflows and are logged internally.
+
+Data retention:
+Deleted workspaces may remain in backup systems for a limited retention period before permanent deletion. Certain compliance obligations may require temporary retention of billing or audit records.
+
+Responsible disclosure:
+Customers and researchers may report suspected vulnerabilities to security@lumen.example. Verified critical vulnerabilities are prioritized immediately.
+
+Lumen will never request passwords through email or chat.
+
+Shared responsibility:
+While Lumen secures the platform infrastructure, customers are responsible for:
+- Managing user permissions
+- Reviewing connected integrations
+- Monitoring exported data
+- Securing third-party applications connected through OAuth
+
+Some advanced security features are only available on Enterprise plans.

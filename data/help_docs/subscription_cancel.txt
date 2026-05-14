@@ -1,0 +1,38 @@
+Cancelling a Lumen Subscription
+
+Customers may cancel their Lumen subscription at any time through Workspace Settings > Billing > Manage Subscription.
+
+Cancellation stops future automatic renewals but does not immediately delete workspace data unless specifically requested.
+
+Monthly subscriptions remain active until the current billing period ends. Annual subscriptions continue through the prepaid contract term unless otherwise stated in a signed agreement.
+
+To cancel a subscription:
+1. Open Workspace Settings
+2. Navigate to Billing
+3. Select Manage Subscription
+4. Click Cancel Plan
+5. Confirm cancellation reason
+
+Workspace owners are the only users authorized to cancel subscriptions.
+
+After cancellation:
+- Premium features become inaccessible at the end of the billing cycle
+- Workspaces may be downgraded to Free status
+- Certain advanced integrations are disabled
+- Data retention policies still apply
+
+Enterprise contracts may require notice periods before cancellation becomes effective. Customers under annual enterprise agreements should contact their Customer Success Manager for contract-specific terms.
+
+Deleting a workspace is separate from cancelling a subscription. Customers who want permanent removal of account data must submit a deletion request through Support.
+
+Common cancellation issues:
+- Subscription already renewed before cancellation was submitted
+- Cancellation performed under the wrong workspace
+- Billing owner permissions missing
+- Browser extensions interfering with checkout or billing pages
+
+If customers experience problems cancelling online, Support may manually assist after verifying account ownership.
+
+Refund eligibility after cancellation depends on account usage, subscription type, and billing timing. Please review the Lumen Refund Policy before submitting refund requests.
+
+Accounts with unpaid invoices may remain in past_due status even after cancellation until outstanding balances are resolved.

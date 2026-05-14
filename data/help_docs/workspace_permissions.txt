@@ -1,0 +1,50 @@
+Workspace Roles and Permissions in Lumen
+
+Lumen workspaces support role-based permissions to help organizations manage collaboration securely.
+
+Default workspace roles:
+- Owner
+- Admin
+- Member
+- Viewer
+
+Owner:
+Workspace Owners have full administrative control including billing access, user management, subscription cancellation, API token management, and workspace deletion.
+
+Admin:
+Admins can manage workspace settings, invite users, configure integrations, and access operational dashboards. Admins cannot transfer ownership or cancel Enterprise contracts unless explicitly authorized.
+
+Member:
+Members can create and edit projects within assigned workspaces but may not modify billing settings or organization-wide security controls.
+
+Viewer:
+Viewers have read-only access to permitted resources.
+
+Permission propagation:
+Permission changes may take several minutes to synchronize across integrations and API systems.
+
+Enterprise-specific controls include:
+- Custom role templates
+- Department-level access restrictions
+- SSO role mapping
+- SCIM provisioning
+- Audit logs for permission changes
+
+Common permission issues:
+- User invited to incorrect workspace
+- Cached browser sessions showing outdated permissions
+- SSO group mappings overriding manual changes
+- API tokens retaining old scopes until regenerated
+
+Best practices:
+- Limit Owner roles to trusted administrators
+- Review inactive users regularly
+- Use MFA for privileged accounts
+- Rotate API credentials periodically
+- Remove third-party integrations no longer in use
+
+Workspace deletion permissions are restricted to Owners only. Deleted workspaces may not be recoverable after the retention period expires.
+
+Support agents may request temporary permission screenshots or workspace IDs when troubleshooting access-related problems.
+
+If customers are unable to access projects after role changes, they should sign out completely and refresh active sessions before contacting Support.

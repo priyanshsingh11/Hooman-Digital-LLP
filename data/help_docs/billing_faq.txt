@@ -1,0 +1,31 @@
+Lumen Billing FAQ
+
+Q: When will I be charged?
+Lumen subscriptions renew automatically at the beginning of each billing cycle. Monthly plans renew every 30 days, while annual plans renew once every 12 months unless cancelled beforehand.
+
+Q: Can I switch between plans?
+Yes. Customers may upgrade or downgrade plans at any time from the Billing section in Workspace Settings. Upgrades take effect immediately with prorated charges. Downgrades apply at the next renewal cycle.
+
+Q: Why was my card charged after cancellation?
+In most cases, this happens when cancellation occurs after the renewal invoice has already been generated. Cancelling a subscription disables future renewals but does not automatically reverse completed charges.
+
+Q: What payment methods are supported?
+Lumen accepts major credit cards, ACH transfers for eligible regions, and invoice-based payments for Enterprise accounts.
+
+Q: What happens if my payment fails?
+Accounts with failed payments enter a 7-day grace period. During this time, most features remain accessible. After the grace period, accounts may move to past_due status and lose access to premium functionality.
+
+Q: Can I get invoices with tax information?
+Yes. Customers may update billing profiles to include VAT IDs, GST numbers, or company registration details. Historical invoices can be regenerated in some regions.
+
+Q: Why do seat counts differ from invoices?
+Seat counts update dynamically based on active workspace members. Billing changes may take several minutes to synchronize across systems.
+
+Q: Do you provide refunds?
+Refund eligibility depends on plan type, billing date, and account usage. Please review the Lumen Refund Policy for detailed conditions.
+
+Q: Can Enterprise customers use purchase orders?
+Yes. Enterprise plans may support purchase orders, annual invoicing, and custom payment terms subject to contract approval.
+
+Q: Where can I view billing history?
+Billing history, invoices, receipts, and payment methods are available under Workspace Settings > Billing.

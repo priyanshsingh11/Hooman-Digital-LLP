@@ -1,0 +1,28 @@
+Lumen Refund Policy
+
+Lumen offers subscription-based SaaS products for individuals, teams, and enterprise organizations. Refund eligibility depends on the subscription type, billing cycle, account activity, and timing of the request.
+
+Monthly subscriptions may be refunded if the request is submitted within 7 calendar days of the charge date and account usage remains minimal. Annual subscriptions may qualify for partial refunds within 30 days of renewal if platform usage has not exceeded reasonable consumption thresholds. Refunds are generally not available for accounts with extensive API usage, active exports, or high-volume automation activity after renewal.
+
+Customers who accidentally purchase the wrong plan, duplicate subscriptions, or multiple seats may request a correction or refund by contacting support at support@lumen.example. Duplicate charges verified by our billing provider are typically refunded within 3–5 business days.
+
+Refunds are not issued for:
+- Partial unused billing periods after cancellation
+- Downgrades completed mid-cycle
+- Delays caused by third-party payment processors
+- Enterprise contracts governed by signed agreements
+- Promotional or discounted plans marked as non-refundable
+
+If a customer experiences a major platform outage exceeding SLA commitments, account credits may be issued instead of monetary refunds. Credit decisions are reviewed individually based on outage severity and contract terms.
+
+Chargeback disputes filed through banks may result in temporary account suspension while the investigation is ongoing. Customers are encouraged to contact Lumen Support before initiating disputes.
+
+Refund requests should include:
+- Account email
+- Invoice ID or transaction ID
+- Reason for refund request
+- Approximate charge date
+
+Approved refunds are returned to the original payment method whenever possible. Processing times vary depending on the customer's bank or payment provider.
+
+Enterprise customers with custom invoicing terms should contact their assigned Customer Success Manager for billing disputes and credit adjustments.

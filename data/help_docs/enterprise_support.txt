@@ -1,0 +1,53 @@
+Lumen Enterprise Support Guide
+
+Enterprise customers receive access to advanced support services designed for large organizations and mission-critical workflows.
+
+Enterprise support benefits may include:
+- Priority ticket routing
+- Faster response time targets
+- Dedicated Customer Success Manager
+- Technical onboarding assistance
+- Architecture consultation
+- Security review support
+- API migration guidance
+
+Support availability depends on the customer's contract tier and region.
+
+Severity definitions:
+Severity 1:
+Critical production outage affecting core business operations. Examples include widespread API failures, inaccessible workspaces, or major security incidents.
+
+Severity 2:
+Major functionality degraded but workarounds exist.
+
+Severity 3:
+General technical questions, configuration guidance, or non-blocking bugs.
+
+Emergency escalation:
+Enterprise customers may request emergency escalation through the Priority Support portal. Security-related incidents should include timestamps, affected users, and reproduction details where possible.
+
+Recommended information for technical tickets:
+- Workspace ID
+- Error messages
+- API request IDs
+- Browser or app version
+- Screenshots or logs
+- Time issue first occurred
+
+Enterprise customers using SSO or SCIM should maintain internal identity administrators for first-level troubleshooting.
+
+Support limitations:
+Lumen Support does not provide:
+- Custom application development
+- Debugging third-party customer codebases
+- Recovery of permanently deleted data after retention expiration
+- Direct management of customer cloud infrastructure
+
+Response targets:
+- Severity 1: Initial response within 1 hour
+- Severity 2: Initial response within 4 hours
+- Severity 3: Initial response within 1 business day
+
+Repeated abuse toward support staff may result in temporary communication restrictions regardless of support tier.
+
+Some Enterprise features require separate enablement by Lumen operations teams before they become visible in workspace settings.
