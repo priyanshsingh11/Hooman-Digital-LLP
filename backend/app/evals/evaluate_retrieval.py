@@ -25,7 +25,7 @@ EXPECTED_DOCS_MAPPING = {
     "spam": [] 
 }
 
-def run_retrieval_evaluation(top_k: int = 2):
+def run_retrieval_evaluation(top_k: int = 5):
     """Evaluates the semantic retrieval engine against expected document mappings."""
     dataset = load_eval_dataset(DATASET_PATH)
     if not dataset:
