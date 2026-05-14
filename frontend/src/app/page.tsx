@@ -105,6 +105,29 @@ export default function Dashboard() {
     }
   };
 
+  const handleApprove = async (ticketId: string, finalizedResponse: string) => {
+    try {
+      // If the response was edited, update it first
+      if (finalizedResponse !== result?.response) {
+        await fetch("http://localhost:8000/api/update-ticket-response", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ticket_id: ticketId, response: finalizedResponse })
+        });
+      } else {
+        await fetch(`http://localhost:8000/api/approve-ticket/${ticketId}`, {
+          method: "POST"
+        });
+      }
+      
+      // Refresh stats and logs
+      const statsRes = await fetch("http://localhost:8000/api/stats");
+      setStats(await statsRes.json());
+    } catch (err) {
+      console.error("Failed to approve ticket", err);
+    }
+  };
+
   return (
     <div className="flex h-screen bg-[#09090b] text-white font-sans selection:bg-blue-500/30">
       {/* Sidebar */}
@@ -259,7 +282,12 @@ export default function Dashboard() {
                         systemConfidence={result.system_confidence}
                       />
                       <RetrievalPanel docs={result.retrieved_docs} confidence={result.retrieval_confidence} />
-                      <ResponseViewer response={result.generated_response} summary={result.workflow_summary} />
+                      <ResponseViewer 
+                        response={result.generated_response} 
+                        summary={result.workflow_summary} 
+                        ticketId={result.id}
+                        onApprove={handleApprove}
+                      />
                     </div>
                   )}
                 </div>

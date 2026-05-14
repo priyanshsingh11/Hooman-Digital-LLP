@@ -6,25 +6,11 @@ from typing import List, Dict, Optional
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
+import os
+
 # --- Configuration ---
 MODEL_NAME = "llama3.2"
-
-SYSTEM_PROMPT = """
-You are a professional Customer Support Agent for Lumen.
-Your goal is to write a polite, helpful, and concise email reply to the customer.
-
-RULES:
-1. Ground your answer ONLY in the provided "Retrieved Context".
-2. If the answer isn't in the docs, politely tell the customer you're looking into it or escalating to a specialist.
-3. DO NOT include internal labels like "escalate_human:" or "Action:". Just write the email body.
-4. Keep it to 2-3 sentences. Professional tone.
-
-FORMAT:
-Hi [Customer Name if available, else Hi there],
-[Your helpful response based on context]
-Best regards,
-Lumen Support Team
-"""
+PROMPT_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "prompts", "generator.txt")
 
 class ResponseGenerator:
     """
@@ -32,6 +18,12 @@ class ResponseGenerator:
     """
     def __init__(self, model: str = MODEL_NAME):
         self.model = model
+        try:
+            with open(PROMPT_PATH, "r", encoding="utf-8") as f:
+                self.system_prompt = f.read()
+        except Exception as e:
+            logger.error(f"Failed to load prompt: {e}")
+            self.system_prompt = "You are a support agent. Write a helpful email."
 
     def generate(self, 
                  subject: str, 
@@ -59,7 +51,7 @@ class ResponseGenerator:
             response = ollama.chat(
                 model=self.model,
                 messages=[
-                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "system", "content": self.system_prompt},
                     {"role": "user", "content": prompt}
                 ],
                 options={"temperature": 0.1} # Lower temp for more predictability

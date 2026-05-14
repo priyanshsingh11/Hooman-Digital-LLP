@@ -89,7 +89,7 @@ class AIWorkflowOrchestrator:
         try:
             # 1. Classification Step
             classification = classify_support_email(subject, body)
-            logger.info(f"Classification Complete: {classification['category']} ({classification['urgency']})")
+            logger.info(f"Classification Complete: {classification.get('category', 'unknown')} ({classification.get('urgency', 'medium')})")
             
             # 2. Retrieval Step (Context Discovery)
             # We search based on both subject and body for better context
@@ -102,7 +102,7 @@ class AIWorkflowOrchestrator:
             logger.info(f"Workflow Action Determined: {action}")
             
             # 4. Generate Workflow Summary
-            summary = f"Email classified as {classification['category']} with {classification['urgency']} urgency. " \
+            summary = f"Email classified as {classification.get('category', 'unknown')} with {classification.get('urgency', 'medium')} urgency. " \
                       f"System selected action: {action}."
             
             # Assemble Final Response

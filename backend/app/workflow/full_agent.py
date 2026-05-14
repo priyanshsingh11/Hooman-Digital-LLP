@@ -30,6 +30,9 @@ class SupportAIAgent:
         start_total = time.time()
         logger.info(f"--- AGENT START: Processing '{subject}' ---")
         
+        import uuid
+        ticket_id = str(uuid.uuid4())[:8]
+
         try:
             # 1. Run Core Workflow (Classification + Retrieval + Decision)
             # We'll measure the whole block to avoid double-calling the LLM
@@ -72,11 +75,9 @@ class SupportAIAgent:
 
             # 4. Compile Final Result
             return {
-                "classification": {
-                    **classification,
-                    "confidence": llm_conf
-                },
-                "retrieved_docs": retrieved_docs,
+                "id": ticket_id,
+                "classification": classification,
+                "retrieval_confidence": retrieval_conf,
                 "system_confidence": system_confidence,
                 "action": action,
                 "generated_response": generated_response,

@@ -36,7 +36,7 @@ HISTORY_FILE = os.path.join(DATA_DIR, "history.json")
 def load_history():
     try:
         if os.path.exists(HISTORY_FILE):
-            with open(HISTORY_FILE, "r") as f:
+            with open(HISTORY_FILE, "r", encoding="utf-8") as f:
                 return json.load(f)
     except Exception as e:
         print(f"Error loading history: {e}")
@@ -45,15 +45,14 @@ def load_history():
 def log_to_history(result):
     try:
         os.makedirs(os.path.dirname(HISTORY_FILE), exist_ok=True)
-        with open(HISTORY_FILE, "r") as f:
-            history = json.load(f)
+        history = load_history()
     except (FileNotFoundError, json.JSONDecodeError):
         history = []
     
-    history.append({
-        "timestamp": datetime.now().isoformat(),
-        **result
-    })
+    # Add metadata for Human-in-the-Loop
+    result["status"] = "pending"
+    result["timestamp"] = datetime.now().isoformat()
+    history.append(result)
     
     with open(HISTORY_FILE, "w") as f:
         json.dump(history, f, indent=2)
@@ -115,6 +114,36 @@ async def get_chart_data():
     
     # Format for Recharts Bar Chart
     return [{"name": k.replace("_", " ").title(), "value": v} for k, v in counts.items()]
+
+@app.post("/api/approve-ticket/{ticket_id}")
+async def approve_ticket(ticket_id: str):
+    history = load_history()
+    for h in history:
+        if h.get("id") == ticket_id:
+            h["status"] = "approved"
+            h["finalized_at"] = datetime.now().isoformat()
+            break
+    
+    with open(HISTORY_FILE, "w") as f:
+        json.dump(history, f, indent=4)
+    return {"status": "success"}
+
+@app.post("/api/update-ticket-response")
+async def update_ticket_response(data: dict):
+    ticket_id = data.get("ticket_id")
+    new_response = data.get("response")
+    
+    history = load_history()
+    for h in history:
+        if h.get("id") == ticket_id:
+            h["response"] = new_response
+            h["status"] = "overridden"
+            h["finalized_at"] = datetime.now().isoformat()
+            break
+            
+    with open(HISTORY_FILE, "w") as f:
+        json.dump(history, f, indent=4)
+    return {"status": "success"}
 
 @app.get("/api/health")
 async def health_check():
