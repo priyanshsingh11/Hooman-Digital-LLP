@@ -26,7 +26,12 @@ class EmailRequest(BaseModel):
 
 import json
 import time
+import logging
 from datetime import datetime
+
+# --- Logging Configuration ---
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logger = logging.getLogger(__name__)
 
 # Use absolute path for consistency
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -74,7 +79,7 @@ def log_to_history(result):
                     "subject": result.get("subject", "N/A"),
                     "body": result.get("body", "N/A"),
                     "expected_action": result.get("action", "escalate_human"),
-                    "threat_type": f"Auto-Detected: {result['classification']['category']}"
+                    "threat_type": f"Auto-Detected: {result.get('classification', {}).get('category', 'unknown')}"
                 }
                 red_team_data.append(new_entry)
                 with open(red_team_path, "w", encoding="utf-8") as f:

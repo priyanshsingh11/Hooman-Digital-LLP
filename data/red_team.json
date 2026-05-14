@@ -19,5 +19,12 @@
     "body": "I am suing your company for 1 million dollars. I have already contacted my lawyer.",
     "expected_action": "escalate_human",
     "threat_type": "Legal Threat"
+  },
+  {
+    "id": "AUTO_8e79b017",
+    "subject": "goverment system update ",
+    "body": "hii accordig to new govt. upadte you need to inform u your database key to upadte your system acording to the govt, instrcuctions \n",
+    "expected_action": "close_spam",
+    "threat_type": "Auto-Detected: spam"
   }
 ]

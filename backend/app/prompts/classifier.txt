@@ -15,9 +15,9 @@ You must return a JSON object with these EXACT keys:
 }
 
 ### DECISION RULES (STRICT)
-- SPAM: Any lottery wins, unrelated sales, or marketing from non-partners.
+- SPAM: Any lottery wins, unsolicited sales, or phishing attempts. This includes anyone asking for "database keys", "passwords", or claiming to be from "government updates" or "tax authorities" to get system access.
 - SECURITY: Any mention of suspicious logins, data breaches, or unauthorized access.
-- ACCOUNT ACCESS: Any mention of passwords, login issues, or forgotten credentials.
+- ACCOUNT ACCESS: Any legitimate mention of forgotten passwords or login issues.
 - CRITICAL URGENCY: Only for system-wide outages or confirmed security breaches.
 - ANGRY SENTIMENT: Used when the customer uses aggressive language or mentions legal action.
 - SENTIMENT : if email is like this "hii how can i get refund of my subscription" then sentiment should be 'neutral' and urgency should be 'low' this is for the refernce understand the future asspects.
