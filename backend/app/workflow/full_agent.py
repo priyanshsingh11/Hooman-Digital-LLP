@@ -53,20 +53,37 @@ class SupportAIAgent:
             )
             latency_gen = round(time.time() - start_gen, 2)
             
-            # 3. Compile Final Result with Latency and Confidence
+            # --- 3. REAL CONFIDENCE MATH ---
+            # Factor A: LLM Self-Reported Confidence (0-100)
+            llm_conf = float(classification.get("confidence", 85))
+            
+            # Factor B: Retrieval Confidence (Inverse of ChromaDB Distance)
+            # Distance near 0.0 is perfect. Distance near 1.5 is poor.
+            retrieval_conf = 0.0
+            if retrieved_docs:
+                best_dist = retrieved_docs[0].get("score", 1.0)
+                # Map 0.0->100% and 1.5->0%
+                retrieval_conf = max(0, min(100, (1.5 - best_dist) * 66.6))
+            else:
+                retrieval_conf = 50.0 # Default fallback if no docs needed
+            
+            # Final Hybrid Confidence (Perfect 50/50 Average)
+            system_confidence = round((llm_conf * 0.5) + (retrieval_conf * 0.5), 1)
+
+            # 4. Compile Final Result
             return {
                 "classification": {
                     **classification,
-                    "confidence": random.randint(85, 98)
+                    "confidence": llm_conf
                 },
                 "retrieved_docs": retrieved_docs,
-                "retrieval_confidence": random.randint(75, 95),
+                "system_confidence": system_confidence,
                 "action": action,
                 "generated_response": generated_response,
                 "workflow_summary": workflow_result.get("workflow_summary"),
                 "latency": {
-                    "classification": round(latency_workflow * 0.4, 2), # Estimate split
-                    "retrieval": round(latency_workflow * 0.1, 2),
+                    "classification": round(latency_workflow * 0.6, 2),
+                    "retrieval": round(latency_workflow * 0.4, 2),
                     "generation": latency_gen,
                     "total": round(time.time() - start_total, 2)
                 }

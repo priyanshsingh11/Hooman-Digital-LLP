@@ -30,7 +30,17 @@ from datetime import datetime
 
 # Use absolute path for consistency
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-HISTORY_FILE = os.path.join(BASE_DIR, "data", "history.json")
+DATA_DIR = os.path.join(BASE_DIR, "data")
+HISTORY_FILE = os.path.join(DATA_DIR, "history.json")
+
+def load_history():
+    try:
+        if os.path.exists(HISTORY_FILE):
+            with open(HISTORY_FILE, "r") as f:
+                return json.load(f)
+    except Exception as e:
+        print(f"Error loading history: {e}")
+    return []
 
 def log_to_history(result):
     try:
@@ -59,11 +69,7 @@ async def process_email(request: EmailRequest):
 
 @app.get("/api/stats")
 async def get_stats():
-    try:
-        with open(HISTORY_FILE, "r") as f:
-            history = json.load(f)
-    except:
-        history = []
+    history = load_history()
 
     if not history:
         return {
@@ -72,32 +78,43 @@ async def get_stats():
         }
 
     total = len(history)
+    # Using 'latency' and 'total' keys to match full_agent.py
     avg_latency = sum(h.get("latency", {}).get("total", 0) for h in history) / total
     
-    # Simple logic: anything not escalated is "automated"
-    automated = len([h for h in history if h.get("action") != "escalate_human"])
+    # Automation logic: anything not escalated is "automated"
+    automated = [h for h in history if h.get("action") != "escalate_human"]
+    automation_rate = (len(automated) / total) * 100
+    
+    # Real Success Rate: Define success as interactions with high system confidence (>80%)
+    high_confidence_tickets = [h for h in history if h.get("system_confidence", 0) >= 80]
+    success_rate = (len(high_confidence_tickets) / total) * 100
+    
+    # Avg System Confidence (Only for tickets that have the field)
+    valid_confidences = [h.get("system_confidence") for h in history if "system_confidence" in h]
+    avg_conf = sum(valid_confidences) / len(valid_confidences) if valid_confidences else 0
     
     return {
         "total_tickets": total,
         "avg_latency": f"{avg_latency:.2f}s",
-        "accuracy": "91.2%", # This would come from evaluation scripts
-        "automation_rate": f"{int((automated/total)*100)}%",
-        "success_rate": "100%",
-        "avg_confidence": f"{int(sum(h.get('classification', {}).get('confidence', 0) for h in history) / total)}%"
+        "automation_rate": f"{int(automation_rate)}%",
+        "success_rate": f"{int(success_rate)}%",
+        "avg_confidence": f"{int(avg_conf)}%"
     }
 
 @app.get("/api/chart-data")
 async def get_chart_data():
-    # Real trend data for the Recharts graph
-    return [
-        {"name": "Mon", "accuracy": 92, "hitRate": 88},
-        {"name": "Tue", "accuracy": 94, "hitRate": 90},
-        {"name": "Wed", "accuracy": 91, "hitRate": 89},
-        {"name": "Thu", "accuracy": 95, "hitRate": 92},
-        {"name": "Fri", "accuracy": 93, "hitRate": 91},
-        {"name": "Sat", "accuracy": 96, "hitRate": 94},
-        {"name": "Sun", "accuracy": 94, "hitRate": 93},
-    ]
+    history = load_history()
+    if not history:
+        return []
+    
+    # Count occurrences of each category
+    counts = {}
+    for h in history:
+        cat = h.get("classification", {}).get("category", "Unknown")
+        counts[cat] = counts.get(cat, 0) + 1
+    
+    # Format for Recharts Bar Chart
+    return [{"name": k.replace("_", " ").title(), "value": v} for k, v in counts.items()]
 
 @app.get("/api/health")
 async def health_check():

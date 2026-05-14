@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, ExternalLink, Database, Search, Target } from "lucide-react";
+import { FileText, ExternalLink, Database } from "lucide-react";
 import { RetrievedDoc } from "@/types";
 
 interface RetrievalPanelProps {
@@ -21,13 +21,6 @@ export default function RetrievalPanel({ docs, confidence }: RetrievalPanelProps
             <p className="text-xs text-white/40">Grounded documentation sources</p>
           </div>
         </div>
-        
-        {confidence && (
-          <div className="bg-purple-500/10 border border-purple-500/20 px-4 py-2 rounded-xl flex items-center gap-2">
-            <Target size={16} className="text-purple-400" />
-            <span className="text-sm font-bold text-purple-400">{confidence}% Retrieval Fit</span>
-          </div>
-        )}
       </div>
 
       {docs.length === 0 ? (
@@ -47,9 +40,6 @@ export default function RetrievalPanel({ docs, confidence }: RetrievalPanelProps
                     <FileText className="text-purple-400" size={16} />
                   </div>
                   <span className="text-sm font-bold text-white/90 truncate max-w-[140px]">{doc.filename}</span>
-                </div>
-                <div className="text-[10px] font-bold text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded-md border border-emerald-400/20">
-                  {doc.score ? Math.round(doc.score * 100) : 92}% Match
                 </div>
               </div>
               

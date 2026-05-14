@@ -7,9 +7,10 @@ import { cn } from "@/lib/utils";
 interface ClassificationCardProps {
   classification: Classification;
   action: string;
+  systemConfidence?: number;
 }
 
-export default function ClassificationCard({ classification, action }: ClassificationCardProps) {
+export default function ClassificationCard({ classification, action, systemConfidence }: ClassificationCardProps) {
   const getUrgencyColor = (urgency: string) => {
     switch (urgency.toLowerCase()) {
       case "high": return "text-rose-400 bg-rose-400/10 border-rose-400/20 shadow-rose-400/10";
@@ -41,12 +42,6 @@ export default function ClassificationCard({ classification, action }: Classific
             <h2 className="text-xl font-bold mb-1">AI Classification</h2>
             <p className="text-sm text-white/40">Real-time intent analysis</p>
           </div>
-          {classification.confidence && (
-            <div className="bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full flex items-center gap-2">
-              <Target size={14} className="text-blue-400" />
-              <span className="text-xs font-bold text-blue-400">{classification.confidence}% Confidence</span>
-            </div>
-          )}
         </div>
         <div className={cn(
           "px-4 py-2 rounded-xl border text-sm font-bold flex items-center gap-2 shadow-lg backdrop-blur-md",

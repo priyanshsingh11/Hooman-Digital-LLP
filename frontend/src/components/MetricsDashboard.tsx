@@ -30,77 +30,57 @@ export default function MetricsDashboard({ stats }: { stats: any }) {
             <Activity size={20} />
           </div>
           <div>
-            <h2 className="text-xl font-bold">System Performance</h2>
-            <p className="text-sm text-white/40">Accuracy and retrieval trends over time</p>
+            <h2 className="text-xl font-bold">Category Distribution</h2>
+            <p className="text-sm text-white/40">Real-time breakdown of ticket intents</p>
           </div>
         </div>
         
         <div className="flex gap-4">
-          <LegendItem color="#3b82f6" label="Accuracy" />
-          <LegendItem color="#a855f7" label="Retrieval Hit Rate" />
+          <LegendItem color="#3b82f6" label="Ticket Volume" />
         </div>
       </div>
 
       <div className="h-[350px] w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={chartData}>
-            <defs>
-              <linearGradient id="colorAcc" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
-                <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-              </linearGradient>
-              <linearGradient id="colorHit" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#a855f7" stopOpacity={0.3}/>
-                <stop offset="95%" stopColor="#a855f7" stopOpacity={0}/>
-              </linearGradient>
-            </defs>
+          <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
             <XAxis 
               dataKey="name" 
               axisLine={false} 
               tickLine={false} 
-              tick={{fill: 'rgba(255,255,255,0.4)', fontSize: 12}}
-              dy={10}
+              tick={{fill: 'rgba(255,255,255,0.4)', fontSize: 10}}
+              angle={-45}
+              textAnchor="end"
+              interval={0}
             />
             <YAxis 
-              hide 
-              domain={[80, 100]}
+              axisLine={false}
+              tickLine={false}
+              tick={{fill: 'rgba(255,255,255,0.4)', fontSize: 12}}
             />
             <Tooltip 
+              cursor={{fill: 'rgba(255,255,255,0.05)'}}
               contentStyle={{ 
                 backgroundColor: '#18181b', 
                 border: '1px solid rgba(255,255,255,0.1)',
                 borderRadius: '16px',
                 boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)'
               }}
-              itemStyle={{ fontSize: '12px', fontWeight: 'bold' }}
+              itemStyle={{ fontSize: '12px', fontWeight: 'bold', color: '#3b82f6' }}
             />
-            <Area 
-              type="monotone" 
-              dataKey="accuracy" 
-              stroke="#3b82f6" 
-              strokeWidth={3}
-              fillOpacity={1} 
-              fill="url(#colorAcc)" 
-              animationDuration={2000}
+            <Bar 
+              dataKey="value" 
+              fill="#3b82f6" 
+              radius={[6, 6, 0, 0]}
+              animationDuration={1500}
             />
-            <Area 
-              type="monotone" 
-              dataKey="hitRate" 
-              stroke="#a855f7" 
-              strokeWidth={3}
-              fillOpacity={1} 
-              fill="url(#colorHit)" 
-              animationDuration={2000}
-              animationDelay={500}
-            />
-          </AreaChart>
+          </BarChart>
         </ResponsiveContainer>
       </div>
 
       <div className="grid grid-cols-3 gap-6 mt-10">
-        <SmallMetric label="Peak Accuracy" value={stats?.accuracy || "91.2%"} icon={<Target size={14} />} />
-        <SmallMetric label="Avg. Confidence" value={stats?.avg_confidence || "0%"} icon={<Zap size={14} />} />
+        <SmallMetric label="Avg. Latency" value={stats?.avg_latency || "0s"} icon={<Activity size={14} />} />
+        <SmallMetric label="Avg. Confidence" value={stats?.avg_confidence || "0%"} icon={<Target size={14} />} />
         <SmallMetric label="Automation Rate" value={stats?.automation_rate || "0%"} icon={<Zap size={14} />} />
       </div>
     </div>

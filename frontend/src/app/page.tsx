@@ -11,7 +11,8 @@ import {
   Bell,
   User,
   Zap,
-  Activity
+  Activity,
+  Shield
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import EmailInputForm from "@/components/EmailInputForm";
@@ -22,6 +23,8 @@ import MetricsDashboard from "@/components/MetricsDashboard";
 import ActivityLogs from "@/components/ActivityLogs";
 import WorkflowTimeline from "@/components/WorkflowTimeline";
 import { WorkflowResult } from "@/types";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -30,14 +33,29 @@ export default function Dashboard() {
   const [result, setResult] = useState<WorkflowResult | null>(null);
   const [logs, setLogs] = useState<any[]>([]);
   const [stats, setStats] = useState<any>(null);
+  const [user, setUser] = useState<any>(null);
+  const [userRole, setUserRole] = useState<string>("agent");
+  const router = useRouter();
 
-  // Correct way to fetch on mount
   useEffect(() => {
+    // Check for active session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) {
+        router.push("/login");
+      } else {
+        setUser(session.user);
+        // Safely get role from localStorage on the client
+        const savedRole = localStorage.getItem("lumen_user_role") || "agent";
+        setUserRole(savedRole);
+      }
+    });
+
+    // Fetch stats
     fetch("http://localhost:8000/api/stats")
       .then(res => res.json())
       .then(data => setStats(data))
       .catch(err => console.error("Failed to fetch stats", err));
-  }, []);
+  }, [router]);
 
   const handleAnalyze = async (subject: string, body: string) => {
     setLoading(true);
@@ -111,12 +129,14 @@ export default function Dashboard() {
             active={activeTab === "simulator"} 
             onClick={() => setActiveTab("simulator")} 
           />
-          <SidebarItem 
-            icon={<BarChart3 size={20} />} 
-            label="Metrics" 
-            active={activeTab === "metrics"} 
-            onClick={() => setActiveTab("metrics")} 
-          />
+          {userRole === "lead" && (
+            <SidebarItem 
+              icon={<BarChart3 size={20} />} 
+              label="Metrics" 
+              active={activeTab === "metrics"} 
+              onClick={() => setActiveTab("metrics")} 
+            />
+          )}
           <SidebarItem 
             icon={<Activity size={20} />} 
             label="Activity" 
@@ -125,8 +145,16 @@ export default function Dashboard() {
           />
         </nav>
 
-        <div className="p-4 border-t border-white/5">
+        <div className="p-4 border-t border-white/5 space-y-2">
           <SidebarItem icon={<Settings size={20} />} label="Settings" />
+          <SidebarItem 
+            icon={<Shield size={20} />} 
+            label="Logout" 
+            onClick={async () => {
+              await supabase.auth.signOut();
+              router.push("/login");
+            }} 
+          />
         </div>
       </aside>
 
@@ -134,7 +162,12 @@ export default function Dashboard() {
       <main className="flex-1 flex flex-col overflow-hidden bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-900/10 via-transparent to-transparent">
         {/* Header */}
         <header className="h-16 border-b border-white/5 flex items-center justify-between px-8 bg-black/20 backdrop-blur-md">
-          <h1 className="text-lg font-medium text-white/80 capitalize">{activeTab}</h1>
+          <div className="flex items-center gap-4">
+            <h1 className="text-lg font-medium text-white/80 capitalize">{activeTab}</h1>
+            <div className="px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-wider text-white/40">
+              {userRole}
+            </div>
+          </div>
           <div className="flex items-center gap-6">
             <div className="relative group">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-blue-400 transition-colors" size={18} />
@@ -165,10 +198,9 @@ export default function Dashboard() {
                 exit={{ opacity: 0, y: -10 }}
                 className="space-y-8"
               >
-                <div className="grid grid-cols-4 gap-6">
+                <div className="grid grid-cols-3 gap-6">
                   <StatCard label="Total Tickets" value={stats?.total_tickets ?? "..."} change="+12%" />
                   <StatCard label="Avg. Latency" value={stats?.avg_latency || "..."} change="-5%" />
-                  <StatCard label="Accuracy" value={stats?.accuracy || "..."} change="+2.1%" />
                   <StatCard label="Automation" value={stats?.automation_rate || "..."} change="+15%" />
                 </div>
                 <MetricsDashboard stats={stats} />
@@ -221,7 +253,11 @@ export default function Dashboard() {
 
                   {result && !loading && (
                     <div className="space-y-6 pb-12">
-                      <ClassificationCard classification={result.classification} action={result.action} />
+                      <ClassificationCard 
+                        classification={result.classification} 
+                        action={result.action} 
+                        systemConfidence={result.system_confidence}
+                      />
                       <RetrievalPanel docs={result.retrieved_docs} confidence={result.retrieval_confidence} />
                       <ResponseViewer response={result.generated_response} summary={result.workflow_summary} />
                     </div>
@@ -230,7 +266,7 @@ export default function Dashboard() {
               </motion.div>
             )}
 
-            {activeTab === "metrics" && (
+            {activeTab === "metrics" && userRole === "lead" && (
                <motion.div key="metrics" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                  <MetricsDashboard stats={stats} />
                </motion.div>

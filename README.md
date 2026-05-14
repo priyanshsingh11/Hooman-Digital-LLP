@@ -117,6 +117,12 @@ By utilizing Ollama for local LLM execution (optimized for Llama 3.2 3B), Lumen 
 ### 3. Contextual Grounding (RAG)
 To eliminate hallucinations, the system uses a Retrieval Augmented Generation pattern. The AI is only allowed to answer using information retrieved from the local vector database.
 
+### 4. Hybrid Confidence Scoring
+Unlike standard AI systems that rely solely on the LLM's self-reported confidence, Lumen implements a **Multi-Factor Confidence Engine**. The final "System Confidence" is a 50/50 average of:
+*   **LLM Self-Assessment**: The model's internal certainty of its classification.
+*   **Semantic Retrieval Fit**: The mathematical "distance" between the user query and the retrieved documentation in vector space.
+This ensures that if the AI "guesses" an intent without supporting facts, the system correctly flags it with low confidence.
+
 ---
 
 ## Project Structure
@@ -178,6 +184,9 @@ Hooman-Digital-LLP/
 *   **Security-First Design**: Local-first inference via Ollama ensures customer data never leaves the local environment.
 *   **Real-Time Dashboard**: Comprehensive Next.js interface for live log monitoring and performance visualization.
 *   **Evaluation Framework**: Built-in scripts to measure system accuracy and retrieval hit rates against ground-truth datasets.
+*   **Supabase Authentication**: Secure, enterprise-grade login system with persistent session management.
+*   **Role-Based Access Control (RBAC)**: Visibly different permissions and dashboard views for `Support Agents` and `Team Leads`.
+*   **Business Intelligence (BI) Dashboard**: Real-time category distribution charts helping teams identify product pain points at a glance.
 
 ---
 
@@ -238,7 +247,9 @@ The Lumen Dashboard provides a command-center view of the entire AI system:
 *   **Email Simulator**: Test any subject/body combo to see the AI's "thought process" in real-time.
 *   **Retrieval Visualization**: See exactly which documents the RAG system pulled and their match percentage.
 *   **Execution Timeline**: A live step-by-step breakdown of the pipeline progress (Intent -> Search -> Action -> Reply).
-*   **Metrics View**: High-level charts showing automation rates, average confidence, and system latency.
+*   **Category Distribution Chart**: A real-time data visualization showing the breakdown of incoming ticket volumes by intent.
+*   **Metrics View**: High-level summary cards showing automation rates, average confidence, and system latency.
+*   **Secure Auth Flow**: Role-based access with dedicated login/logout states and permission-locked views.
 
 ---
 
