@@ -109,7 +109,7 @@ class AIWorkflowOrchestrator:
             return {
                 "classification": classification,
                 "retrieved_docs": [
-                    {"source": doc["filename"], "content": doc["text"]} for doc in retrieved_docs
+                    {"filename": doc["filename"], "source": doc["filename"], "content": doc["text"]} for doc in retrieved_docs
                 ],
                 "action": action,
                 "workflow_summary": summary

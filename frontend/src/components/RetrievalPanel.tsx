@@ -23,7 +23,7 @@ export default function RetrievalPanel({ docs, confidence }: RetrievalPanelProps
         </div>
       </div>
 
-      {docs.length === 0 ? (
+      {!docs || docs.length === 0 ? (
         <div className="py-12 text-center border-2 border-dashed border-white/5 rounded-2xl text-white/20 italic text-sm">
           No relevant documents retrieved for this query.
         </div>

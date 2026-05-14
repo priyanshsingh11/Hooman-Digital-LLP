@@ -202,6 +202,9 @@ Hooman-Digital-LLP/
 *   **Real-Time Dashboard**: Comprehensive Next.js interface for live log monitoring and performance visualization.
 *   **Evaluation Framework**: Built-in scripts to measure system accuracy and retrieval hit rates against ground-truth datasets.
 *   **LLM-as-a-Judge**: An automated qualitative evaluation suite grading responses on Tone, Accuracy, Empathy, and Clarity.
+*   **Adversarial Robustness**: A dedicated [Red-Team Suite](backend/app/evals/red_team_eval.py) for testing prompt injections and data exfiltration.
+*   **Financial Impact Dashboard**: Real-time cost-savings calculation comparing local inference vs. GPT-4o spend.
+*   **Regression Detection**: A dedicated [Version Log](backend/app/prompts/VERSION_LOG.md) to ensure prompt changes never degrade performance.
 *   **Supabase Authentication**: Secure login system with role-based permissions (Agent vs. Lead).
 *   **Business Intelligence (BI) Dashboard**: Real-time category distribution charts helping teams identify product pain points at a glance.
 *   **Prompt Management**: Centralized `backend/app/prompts/` directory for version-controlled instruction templates.
@@ -229,10 +232,16 @@ Hooman-Digital-LLP/
 
 To maintain production-grade reliability, the system includes a dedicated evaluation suite to benchmark every stage of the pipeline:
 
-*   **`evaluate_classifier.py`**: Benchmarks the LLM's ability to correctly identify intent categories, urgency levels, and sentiment across a ground-truth dataset.
-*   **`evaluate_retrieval.py`**: Measures the "Hit Rate" of the RAG system, ensuring that the semantic search is pulling the correct help documentation for specific user queries.
-*   **`evaluate_workflow.py`**: Validates the end-to-end orchestration logic, testing if the final business decision (Auto-reply vs. Human Escalation) matches the expected outcome.
 *   **`metrics_utils.py`**: A centralized mathematical utility that standardizes how accuracy and failure reports are calculated and visualized across all tests.
+
+### Running the Evaluation Suite
+To reproduce our performance benchmarks, run the following commands from the project root:
+
+1. **Classification Accuracy**: `python backend/app/evals/evaluate_classifier.py`
+2. **Qualitative Judge**: `python backend/app/evals/judge_evaluation.py`
+3. **Adversarial Security**: `python backend/app/evals/red_team_eval.py`
+
+---
 
 ---
 

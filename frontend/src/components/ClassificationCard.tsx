@@ -11,10 +11,12 @@ interface ClassificationCardProps {
 }
 
 export default function ClassificationCard({ classification, action, systemConfidence }: ClassificationCardProps) {
-  const getUrgencyColor = (urgency: string) => {
+  const getUrgencyColor = (urgency: string = "medium") => {
+    if (!urgency) return "text-emerald-400 bg-emerald-400/10 border-emerald-400/20 shadow-emerald-400/10";
     switch (urgency.toLowerCase()) {
       case "high": return "text-rose-400 bg-rose-400/10 border-rose-400/20 shadow-rose-400/10";
       case "medium": return "text-amber-400 bg-amber-400/10 border-amber-400/20 shadow-amber-400/10";
+      case "critical": return "text-red-500 bg-red-500/10 border-red-500/20 shadow-red-500/10 animate-pulse";
       default: return "text-emerald-400 bg-emerald-400/10 border-emerald-400/20 shadow-emerald-400/10";
     }
   };
@@ -45,23 +47,23 @@ export default function ClassificationCard({ classification, action, systemConfi
         </div>
         <div className={cn(
           "px-4 py-2 rounded-xl border text-sm font-bold flex items-center gap-2 shadow-lg backdrop-blur-md",
-          getUrgencyColor(classification.urgency)
+          getUrgencyColor(classification?.urgency)
         )}>
           <AlertCircle size={16} />
-          {classification.urgency.toUpperCase()} PRIORITY
+          {(classification?.urgency || "MEDIUM").toUpperCase()} PRIORITY
         </div>
       </div>
 
       <div className="grid grid-cols-3 gap-6 relative">
-        <Metric label="Category" value={formatLabel(classification.category)} icon={<Tag size={14} />} color="text-blue-400" />
-        <Metric label="Sentiment" value={formatLabel(classification.sentiment)} icon={<MessageSquare size={14} />} color="text-purple-400" />
-        <Metric label="Workflow Action" value={formatLabel(action)} icon={getActionIcon(action)} color="text-emerald-400" />
+        <Metric label="Category" value={formatLabel(classification?.category || "Unknown")} icon={<Tag size={14} />} color="text-blue-400" />
+        <Metric label="Sentiment" value={formatLabel(classification?.sentiment || "Neutral")} icon={<MessageSquare size={14} />} color="text-purple-400" />
+        <Metric label="Workflow Action" value={formatLabel(action || "Escalate")} icon={getActionIcon(action || "escalate")} color="text-emerald-400" />
       </div>
 
       <div className="mt-8 pt-6 border-t border-white/5 relative">
         <h4 className="text-[10px] font-bold uppercase tracking-widest text-white/30 mb-3">Analysis Reasoning</h4>
         <p className="text-sm text-white/70 leading-relaxed italic">
-          "{classification.reasoning}"
+          "{classification?.reasoning || "Analyzing intent and context..."}"
         </p>
       </div>
     </div>

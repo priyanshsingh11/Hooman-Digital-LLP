@@ -7,14 +7,17 @@ import { Activity, Target, Zap } from "lucide-react";
 export default function MetricsDashboard({ stats }: { stats: any }) {
   const [chartData, setChartData] = useState([]);
 
+  const [metrics, setMetrics] = useState<any>(null);
+
   useEffect(() => {
     fetch("http://localhost:8000/api/chart-data")
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) {
+        if (data.distribution) {
+          setChartData(data.distribution);
+          setMetrics(data.metrics);
+        } else if (Array.isArray(data)) {
           setChartData(data);
-        } else {
-          console.error("Chart data is not an array:", data);
         }
       })
       .catch(err => console.error("Failed to fetch chart data", err));
@@ -78,10 +81,11 @@ export default function MetricsDashboard({ stats }: { stats: any }) {
         </ResponsiveContainer>
       </div>
 
-      <div className="grid grid-cols-3 gap-6 mt-10">
+      <div className="grid grid-cols-4 gap-6 mt-10">
         <SmallMetric label="Avg. Latency" value={stats?.avg_latency || "0s"} icon={<Activity size={14} />} />
         <SmallMetric label="Avg. Confidence" value={stats?.avg_confidence || "0%"} icon={<Target size={14} />} />
         <SmallMetric label="Automation Rate" value={stats?.automation_rate || "0%"} icon={<Zap size={14} />} />
+        <SmallMetric label="Potential Savings" value={`$${metrics?.cost_saved?.toFixed(2) || "0.00"}`} icon={<span className="text-amber-400 font-bold">$</span>} />
       </div>
     </div>
   );

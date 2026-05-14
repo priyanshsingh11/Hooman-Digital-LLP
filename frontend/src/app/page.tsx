@@ -32,6 +32,8 @@ export default function Dashboard() {
   const [loadingStep, setLoadingStep] = useState<string>("");
   const [result, setResult] = useState<WorkflowResult | null>(null);
   const [logs, setLogs] = useState<any[]>([]);
+  const [chartData, setChartData] = useState([]);
+  const [costSaved, setCostSaved] = useState(0);
   const [stats, setStats] = useState<any>(null);
   const [user, setUser] = useState<any>(null);
   const [userRole, setUserRole] = useState<string>("agent");
@@ -56,6 +58,22 @@ export default function Dashboard() {
       .then(data => setStats(data))
       .catch(err => console.error("Failed to fetch stats", err));
   }, [router]);
+
+  // Fetch chart data
+  useEffect(() => {
+    fetch("http://localhost:8000/api/chart-data")
+      .then(res => res.json())
+      .then(resData => {
+        // Handle the new object structure { distribution, metrics }
+        if (resData.distribution) {
+          setChartData(resData.distribution);
+          setCostSaved(resData.metrics.cost_saved);
+        } else {
+          setChartData(resData); // Fallback for old structure
+        }
+      })
+      .catch(err => console.error("Error fetching chart data:", err));
+  }, []);
 
   const handleAnalyze = async (subject: string, body: string) => {
     setLoading(true);

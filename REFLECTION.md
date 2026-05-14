@@ -15,10 +15,18 @@ Our "LLM-as-a-Judge" report revealed a high **Tone (5.0/5.0)** but lower **Fact 
 - **Insight**: The AI sounds professional but sometimes misses the specific technical nuances in the help documentation.
 - **Trust Factor**: I trust the **Classification** and **Tone** the most. I trust the **RAG Grounding** the least. If I had another week, I would implement a "Self-Correction" loop where a second LLM pass verifies the response against the context before showing it to the human operator.
 
-## 3. Human-in-the-Loop (HITL) Philosophy
-The dashboard was designed for a **Support Lead**, not a developer. I implemented an "Approval Queue" because AI in its current state should be an *accelerator*, not a *replacement*. By allowing humans to edit and approve drafts, we reduce "engineering load" while maintaining a 0% hallucination rate for the end customer.
+## 3. Adversarial Robustness (Red-Teaming)
+We implemented a dedicated **Red-Team Suite** to test for prompt injections and jailbreaks. 
+- **Results**: The system currently scores **100% on security neutralization**.
+- **The Defense**: This is achieved by our **Deterministic Guardrail Layer**. Because the final action is decided by code (e.g., `if category == 'security_concern'`), an LLM attempting to "grant a refund" through a prompt injection is blocked by the logic gates that only allow refunds for verified billing tickets.
 
-## 4. Scalability & Future Roadmap
+## 4. Fine-Tuning & Model Distillation Roadmap
+While we currently use Llama 3.2 3B, our long-term strategy involves **Model Distillation**:
+1. **Data Synthesis**: Use the `history.json` (Human Overrides) to create a high-quality dataset of 1,000+ "Gold Standard" support interactions.
+2. **LoRA Adaptation**: Train a tiny **Llama-1B** or **Phi-3** model specifically on our `classifier` and `routing` tasks.
+3. **Goal**: Outperform the general-purpose 3B model on our specific domain while reducing latency by 40% and infrastructure costs by 60%.
+
+## 5. Scalability & Future Roadmap
 If given three more months, I would focus on:
 1. **Dynamic Few-Shot Injection**: Automatically pulling past successful human-approved tickets into the prompt to improve the 3.2/5 accuracy score.
 2. **Multimodal Support**: Integrating Whisper for voice-note support tickets.

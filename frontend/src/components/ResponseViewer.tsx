@@ -95,7 +95,7 @@ export default function ResponseViewer({ response: initialResponse, summary, tic
             "text-white/90 leading-relaxed font-medium whitespace-pre-wrap transition-opacity",
             isApproved && "opacity-50"
           )}>
-            {editedResponse}
+            {editedResponse || "No response generated."}
           </p>
         )}
       </div>
@@ -119,7 +119,7 @@ export default function ResponseViewer({ response: initialResponse, summary, tic
         <div>
           <h4 className="text-xs font-bold text-blue-400 uppercase tracking-widest mb-1">Workflow Summary</h4>
           <p className="text-sm text-white/60 leading-relaxed">
-            {summary}
+            {summary || "Calculating workflow impact..."}
           </p>
         </div>
       </div>

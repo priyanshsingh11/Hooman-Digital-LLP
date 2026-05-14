@@ -76,7 +76,10 @@ class SupportAIAgent:
             # 4. Compile Final Result
             return {
                 "id": ticket_id,
+                "subject": subject,
+                "body": body,
                 "classification": classification,
+                "retrieved_docs": workflow_result.get("retrieved_docs", []),
                 "retrieval_confidence": retrieval_conf,
                 "system_confidence": system_confidence,
                 "action": action,
