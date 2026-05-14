@@ -122,16 +122,16 @@ By utilizing Ollama for local LLM execution (optimized for Llama 3.2 3B), Lumen 
 ### 3. Contextual Grounding (RAG)
 To eliminate hallucinations, the system uses a Retrieval Augmented Generation pattern. The AI is only allowed to answer using information retrieved from the local vector database.
 
-### 4. Hybrid Confidence Scoring
-Unlike standard AI systems that rely solely on the LLM's self-reported confidence, Lumen implements a **Multi-Factor Confidence Engine**. The final "System Confidence" is a 50/50 average of:
-*   **LLM Self-Assessment**: The model's internal certainty of its classification.
-*   **Semantic Retrieval Fit**: The mathematical "distance" between the user query and the retrieved documentation in vector space.
-This ensures that if the AI "guesses" an intent without supporting facts, the system correctly flags it with low confidence.
+### 4. Multi-Factor Confidence Engine
+Unlike standard AI systems that rely solely on the LLM's self-reported confidence, Lumen implements a **Hybrid Scoring Engine**. The final "System Confidence" is a 50/50 weighted average of:
+*   **LLM Self-Assessment**: The model's internal certainty (0-100) of its classification.
+*   **Semantic Retrieval Fit**: A mathematical mapping of ChromaDB distance (0.0 to 1.5) to a percentage score, ensuring the AI only answers when grounded in documentation.
 
 ### 5. Human-in-the-Loop (HITL) Controls
 We implement a "Draft & Approve" workflow where the AI proposes an action, but a human operator has the final word.
-*   **Manual Override**: Operators can edit any AI-generated response in real-time.
-*   **Audit Trail**: The system logs whether a ticket was `Approved`, `Overridden`, or `Escalated`.
+*   **Status Lifecycle**: Tickets move through `Pending` -> `Approved` or `Overridden` states.
+*   **Manual Override**: Operators can edit any AI-generated response in real-time, which is logged as an `overridden` action for future training.
+*   **Audit Trail**: The system logs the exact timestamp and user action for every ticket in `history.json`.
 
 ### 6. Production Security (Supabase)
 The system implements a production-grade authentication layer using **Supabase Auth**.
@@ -147,46 +147,57 @@ The system implements a production-grade authentication layer using **Supabase A
 Hooman-Digital-LLP/
 ├── backend/
 │   ├── app/
-│   │   ├── evals/
-│   │   │   ├── evaluate_classifier.py    # Benchmarks the LLM intent detection
-│   │   │   ├── evaluate_retrieval.py     # Measures RAG search accuracy
-│   │   │   ├── evaluate_workflow.py      # Tests end-to-end decision logic
-│   │   │   └── metrics_utils.py          # Math utilities for scoring
-│   │   ├── rag/
-│   │   │   ├── ingest.py                 # Document processing & vectorization
-│   │   │   ├── retriever.py              # ChromaDB search interface
-│   │   │   └── test_retrieval.py         # Unit tests for RAG
-│   │   ├── services/
-│   │   │   ├── classifier.py             # Llama 3.1 intent classification
+│   │   ├── evals/                        # Pipeline benchmarking & safety suite
+│   │   │   ├── evaluate_classifier.py    # Intent detection accuracy
+│   │   │   ├── evaluate_retrieval.py     # RAG search relevance
+│   │   │   ├── evaluate_workflow.py      # End-to-end decision logic
+│   │   │   ├── judge_evaluation.py       # LLM-as-a-Judge qualitative scoring
+│   │   │   ├── metrics_utils.py          # Standardized scoring math
+│   │   │   └── red_team_eval.py          # Security & jailbreak testing
+│   │   ├── prompts/                      # Version-controlled prompt templates
+│   │   ├── rag/                          # Retrieval Augmented Generation logic
+│   │   │   ├── ingest.py                 # Vector DB population
+│   │   │   ├── retriever.py              # Semantic search interface
+│   │   │   └── test_retrieval.py         # RAG unit tests
+│   │   ├── services/                     # Core AI processing modules
+│   │   │   ├── classifier.py             # Intent & Sentiment analysis
 │   │   │   └── response_generator.py     # Grounded email synthesis
-│   │   ├── workflow/
-│   │   │   ├── workflow.py               # Deterministic business logic
-│   │   │   ├── full_agent.py             # Main orchestrator pipeline
-│   │   │   └── test_full_agent.py        # Pipeline validation scripts
-│   │   └── main.py                       # FastAPI application & API routes
-│   └── requirements.txt                  # Python dependency list
+│   │   ├── workflow/                     # Business orchestration layer
+│   │   │   ├── full_agent.py             # Main execution pipeline
+│   │   │   ├── test_full_agent.py        # Integration tests
+│   │   │   ├── test_workflow.py          # Decision logic unit tests
+│   │   │   └── workflow.py               # Deterministic routing rules
+│   │   └── main.py                       # FastAPI application entry point
+│   ├── db/                               # Local vector database storage
+│   └── requirements.txt                  # Python dependencies
 ├── frontend/
 │   ├── src/
-│   │   ├── components/                   # UI Components
+│   │   ├── app/                          # Next.js App Router pages
+│   │   ├── components/                   # Modular UI components
+│   │   │   ├── ActivityLogs.tsx          # Real-time event feed
 │   │   │   ├── ClassificationCard.tsx    # Intent visualization
-│   │   │   ├── RetrievalPanel.tsx        # RAG result display
-│   │   │   ├── ResponseViewer.tsx        # AI output viewer
+│   │   │   ├── EmailInputForm.tsx        # Request simulator
 │   │   │   ├── MetricsDashboard.tsx      # Performance charts
-│   │   │   └── ActivityLogs.tsx          # Real-time event log
-│   │   ├── app/
-│   │   │   ├── page.tsx                  # Main Dashboard entry
-│   │   │   └── layout.tsx                # Next.js global layout
-│   │   └── types/
-│   │       └── index.ts                  # TypeScript shared interfaces
-│   └── package.json                      # Node.js dependency list
-├── data/
-│   ├── help_docs/                        # Knowledge base (txt files)
-│   ├── emails.json                       # Evaluation dataset
-│   ├── history.json                      # Local log store (ignored)
-│   └── customer_data.json                # User context for RAG
-├── db/                                   # Persistent ChromaDB storage
-├── .gitignore                            # Version control exclusions
-└── README.md                             # Documentation
+│   │   │   ├── ResponseViewer.tsx        # AI draft editor
+│   │   │   ├── RetrievalPanel.tsx        # RAG context viewer
+│   │   │   └── WorkflowTimeline.tsx      # Pipeline step-tracker
+│   │   ├── lib/                          # Utility functions & Supabase client
+│   │   └── types/                        # Shared TypeScript definitions
+│   ├── package.json                      # Node.js dependencies
+│   └── tsconfig.json                     # TypeScript configuration
+├── data/                                 # Knowledge base & Datasets
+│   ├── help_docs/                        # Raw support documentation (txt)
+│   ├── customer_data.json                # Synthetic customer metadata
+│   ├── emails.json                       # Ground-truth evaluation dataset
+│   ├── history.json                      # Local session logs
+│   ├── past_tickets.json                 # Historical support data
+│   └── red_team.json                     # Adversarial test cases
+├── scripts/                              # Maintenance & data scripts
+│   └── process_help_docs.py              # Documentation pre-processing
+├── .gitignore                            # Version control rules
+├── README.md                             # Project documentation
+├── REFLECTION.md                         # Technical retrospective
+└── genai_assignment.md.pdf               # Project requirements
 ```
 
 ---
@@ -203,7 +214,9 @@ Hooman-Digital-LLP/
 *   **Evaluation Framework**: Built-in scripts to measure system accuracy and retrieval hit rates against ground-truth datasets.
 *   **LLM-as-a-Judge**: An automated qualitative evaluation suite grading responses on Tone, Accuracy, Empathy, and Clarity.
 *   **Adversarial Robustness**: A dedicated [Red-Team Suite](backend/app/evals/red_team_eval.py) for testing prompt injections and data exfiltration.
-*   **Financial Impact Dashboard**: Real-time cost-savings calculation comparing local inference vs. GPT-4o spend.
+*   **Auto-Red-Teaming**: The system automatically identifies and captures malicious inputs (spam, prompt injections) during live operation and appends them to the [Red-Team Dataset](data/red_team.json) for continuous security hardening.
+*   **Financial Impact Dashboard**: Real-time cost-savings calculation comparing local inference vs. GPT-4o spend ($0.01/ticket estimate).
+*   **Deterministic Safety Guardrails**: Hardcoded logic gates that intercept high-risk keywords (e.g., "lawsuit", "attorney") to guarantee immediate human escalation regardless of AI confidence.
 *   **Regression Detection**: A dedicated [Version Log](backend/app/prompts/VERSION_LOG.md) to ensure prompt changes never degrade performance.
 *   **Supabase Authentication**: Secure login system with role-based permissions (Agent vs. Lead).
 *   **Business Intelligence (BI) Dashboard**: Real-time category distribution charts helping teams identify product pain points at a glance.
@@ -225,6 +238,10 @@ Hooman-Digital-LLP/
 *   Vector DB: ChromaDB
 *   AI Inference: Ollama (Llama 3.2 3B - Optimized for Speed)
 *   Embeddings: nomic-embed-text
+
+### Data & Scripts
+*   **Data Ingestion Utility**: `scripts/process_help_docs.py` - Converts centralized JSON knowledge bases into the individual text files required for the RAG indexing pipeline.
+*   **History Logger**: Automated session persistence in `data/history.json` for all AI-customer interactions.
 
 ---
 
