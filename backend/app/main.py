@@ -28,10 +28,13 @@ import json
 import time
 from datetime import datetime
 
-HISTORY_FILE = "data/history.json"
+# Use absolute path for consistency
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+HISTORY_FILE = os.path.join(BASE_DIR, "data", "history.json")
 
 def log_to_history(result):
     try:
+        os.makedirs(os.path.dirname(HISTORY_FILE), exist_ok=True)
         with open(HISTORY_FILE, "r") as f:
             history = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):

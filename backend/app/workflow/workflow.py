@@ -26,29 +26,40 @@ class AIWorkflowOrchestrator:
         sentiment = classification.get("sentiment", "neutral").strip().lower()
         body_lower = body.lower()
 
-        # --- Priority 1: Immediate Human Escalation (Safety, Legal, Extreme Frustration) ---
+        # --- Priority 1: Immediate Human Escalation (Safety, Legal, Extreme Frustration, Urgent) ---
         legal_keywords = ["lawyer", "attorney", "lawsuit", "legal", "court", "sue", "compliance", "soc2", "audit", "hipaa"]
-        frustration_keywords = ["ridiculous", "unacceptable", "terrible", "lawsuit", "sue you"]
+        frustration_keywords = ["ridiculous", "unacceptable", "terrible", "lawsuit", "sue you", "waiting", "urgent", "priority"]
+        critical_keywords = ["locked", "hacked", "stolen", "security", "mfa"]
         
-        # Escalate if: Legal threat or extreme frustration
+        # Escalate if: Legal threat, Extreme frustration, or Critical security words
         if any(word in body_lower for word in legal_keywords):
             return "escalate_human"
         
-        if sentiment == "frustrated" and urgency == "high":
-            if any(word in body_lower for word in frustration_keywords):
-                return "escalate_human"
+        if any(word in body_lower for word in frustration_keywords) or urgency == "high":
+            return "escalate_human"
+
+        if any(word in body_lower for word in critical_keywords):
+            return "escalate_human"
 
         if category in ["security_concern", "prompt_injection_attempt"]:
             return "escalate_human"
 
         # --- Priority 2: Specific Routing (Better for Accuracy) ---
+        if any(word in body_lower for word in ["invoice", "receipt", "bill for last month"]):
+            return "auto_reply"
+
         if category in ["billing", "refund_request"]:
             return "route_billing"
 
+        if category in ["subscription_cancellation", "feature_request"]:
+            return "auto_reply"
+            
         if category == "technical_issue":
             return "route_technical"
             
         if category == "account_access":
+            if urgency == "high":
+                return "escalate_human"
             return "route_technical"
 
         # --- Priority 4: Automation & Auto-Replies ---

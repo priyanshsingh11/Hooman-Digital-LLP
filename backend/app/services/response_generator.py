@@ -7,22 +7,23 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 # --- Configuration ---
-MODEL_NAME = "llama3:latest"
+MODEL_NAME = "llama3.2"
 
 SYSTEM_PROMPT = """
-You are an elite Customer Support AI for Lumen.
+You are a professional Customer Support Agent for Lumen.
+Your goal is to write a polite, helpful, and concise email reply to the customer.
 
-CONSTRAINTS:
-1. Be CONCISE and OPERATIONAL. Avoid fluff or long apologies.
-2. Ground your answer ONLY in the provided "Retrieved Context".
-3. No more than 3-4 sentences total.
-4. Match the customer's sentiment but stay professional.
-5. If no answer is found in context, say: "I've reviewed our documentation and am escalating this to a specialist for further investigation."
+RULES:
+1. Ground your answer ONLY in the provided "Retrieved Context".
+2. If the answer isn't in the docs, politely tell the customer you're looking into it or escalating to a specialist.
+3. DO NOT include internal labels like "escalate_human:" or "Action:". Just write the email body.
+4. Keep it to 2-3 sentences. Professional tone.
 
-ACTION-SPECIFIC INSTRUCTIONS:
-- escalate_human: Provide a brief summary of the issue for the agent.
-- close_spam: State "INTERNAL: No reply generated for spam."
-- others: Provide direct instructions or the requested info based on docs.
+FORMAT:
+Hi [Customer Name if available, else Hi there],
+[Your helpful response based on context]
+Best regards,
+Lumen Support Team
 """
 
 class ResponseGenerator:
@@ -51,23 +52,7 @@ class ResponseGenerator:
             context_str = "No specific help documentation found for this query."
 
         # Construct the generation prompt
-        prompt = f"""
-        CUSTOMER EMAIL:
-        Subject: {subject}
-        Body: {body}
-
-        CLASSIFICATION:
-        Category: {classification.get('category')}
-        Urgency: {classification.get('urgency')}
-        Sentiment: {classification.get('sentiment')}
-
-        WORKFLOW ACTION: {action}
-
-        RETRIEVED CONTEXT (Use this to answer):
-        {context_str}
-
-        FINAL RESPONSE:
-        """
+        prompt = f"Customer Message: {body}\n\nHelp Documentation:\n{context_str}\n\nPlease write the professional email reply now:"
 
         try:
             logger.info(f"Generating AI response for action: {action}")
@@ -77,11 +62,19 @@ class ResponseGenerator:
                     {"role": "system", "content": SYSTEM_PROMPT},
                     {"role": "user", "content": prompt}
                 ],
-                options={"temperature": 0.2} # Slight creativity while staying grounded
+                options={"temperature": 0.1} # Lower temp for more predictability
             )
             
             generated_text = response['message']['content'].strip()
-            return generated_text
+            
+            # --- STRIKE: Clean up any leaked internal labels ---
+            labels_to_scrub = ["escalate_human:", "auto_reply:", "route_technical:", "Action:", "FINAL RESPONSE:"]
+            for label in labels_to_scrub:
+                if generated_text.startswith(label):
+                    generated_text = generated_text[len(label):].strip()
+                generated_text = generated_text.replace(label, "")
+            
+            return generated_text.strip()
 
         except Exception as e:
             logger.error(f"Error generating response: {e}")

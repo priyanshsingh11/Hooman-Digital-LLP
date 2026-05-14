@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 # --- Configuration ---
-MODEL_NAME = "llama3:latest"
+MODEL_NAME = "llama3.2"
 
 # --- Added: Instruction, System, Structured Output, Schema-Constrained, Role, Zero-Shot, Constraint, Contextual, Classification, Adversarial Prompting ---
 SYSTEM_PROMPT = """

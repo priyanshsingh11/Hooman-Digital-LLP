@@ -10,7 +10,13 @@ export default function MetricsDashboard({ stats }: { stats: any }) {
   useEffect(() => {
     fetch("http://localhost:8000/api/chart-data")
       .then(res => res.json())
-      .then(data => setChartData(data))
+      .then(data => {
+        if (Array.isArray(data)) {
+          setChartData(data);
+        } else {
+          console.error("Chart data is not an array:", data);
+        }
+      })
       .catch(err => console.error("Failed to fetch chart data", err));
   }, []);
 
