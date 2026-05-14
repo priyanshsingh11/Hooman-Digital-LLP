@@ -198,9 +198,18 @@ Hooman-Digital-LLP/
 
 ---
 
-## Evaluation Metrics
+## Evaluation Framework
 
-Continuous improvement is driven by our automated evaluation suite.
+To maintain production-grade reliability, the system includes a dedicated evaluation suite to benchmark every stage of the pipeline:
+
+*   **`evaluate_classifier.py`**: Benchmarks the LLM's ability to correctly identify intent categories, urgency levels, and sentiment across a ground-truth dataset.
+*   **`evaluate_retrieval.py`**: Measures the "Hit Rate" of the RAG system, ensuring that the semantic search is pulling the correct help documentation for specific user queries.
+*   **`evaluate_workflow.py`**: Validates the end-to-end orchestration logic, testing if the final business decision (Auto-reply vs. Human Escalation) matches the expected outcome.
+*   **`metrics_utils.py`**: A centralized mathematical utility that standardizes how accuracy and failure reports are calculated and visualized across all tests.
+
+---
+
+## Evaluation Metrics
 
 | Metric | Score | Note |
 | :--- | :--- | :--- |

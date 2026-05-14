@@ -27,15 +27,19 @@ class AIWorkflowOrchestrator:
         body_lower = body.lower()
 
         # --- Priority 1: Immediate Human Escalation (Safety, Legal, Extreme Frustration, Urgent) ---
-        legal_keywords = ["lawyer", "attorney", "lawsuit", "legal", "court", "sue", "compliance", "soc2", "audit", "hipaa"]
-        frustration_keywords = ["ridiculous", "unacceptable", "terrible", "lawsuit", "sue you", "waiting", "urgent", "priority"]
-        critical_keywords = ["locked", "hacked", "stolen", "security", "mfa"]
+        # Heuristic 1: Immediate Human Escalation for high-risk/high-frustration content
+        body_lower = body.lower()
+        # Removed "waiting", "urgent", "priority" as they are too common in normal emails
+        critical_keywords = ["lawsuit", "sue you", "legal action", "attorney", "better business bureau"]
+        extreme_frustration = ["terrible service", "ridiculous", "unacceptable", "disgusting"]
         
-        # Escalate if: Legal threat, Extreme frustration, or Critical security words
-        if any(word in body_lower for word in legal_keywords):
+        if any(word in body_lower for word in critical_keywords):
             return "escalate_human"
-        
-        if any(word in body_lower for word in frustration_keywords) or urgency == "high":
+            
+        if any(word in body_lower for word in extreme_frustration) and sentiment == "frustrated":
+            return "escalate_human"
+
+        if urgency == "high" and sentiment == "frustrated":
             return "escalate_human"
 
         if any(word in body_lower for word in critical_keywords):
