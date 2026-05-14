@@ -213,9 +213,10 @@ To maintain production-grade reliability, the system includes a dedicated evalua
 
 | Metric | Score | Note |
 | :--- | :--- | :--- |
-| **Classification Accuracy** | 82.0% | Success in identifying intent categories. |
+| **Classification Accuracy** | 82.0% | Success in identifying intent categories (Llama 3.2). |
+| **Urgency Accuracy** | 64.0% | Correctness of priority level detection. |
 | **Retrieval Hit Rate** | 78.0% | Percentage of queries where correct docs were found. |
-| **Workflow Decision Accuracy** | 62.0% | Correctness of the final routing decision. |
+| **Workflow Decision Accuracy** | 54.0% | Correctness of the final business routing decision. |
 
 ---
 
