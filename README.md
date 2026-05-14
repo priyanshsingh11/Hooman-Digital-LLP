@@ -123,6 +123,11 @@ Unlike standard AI systems that rely solely on the LLM's self-reported confidenc
 *   **Semantic Retrieval Fit**: The mathematical "distance" between the user query and the retrieved documentation in vector space.
 This ensures that if the AI "guesses" an intent without supporting facts, the system correctly flags it with low confidence.
 
+### 5. Human-in-the-Loop (HITL) Controls
+We implement a "Draft & Approve" workflow where the AI proposes an action, but a human operator has the final word.
+*   **Manual Override**: Operators can edit any AI-generated response in real-time.
+*   **Audit Trail**: The system logs whether a ticket was `Approved`, `Overridden`, or `Escalated`.
+
 ---
 
 ## Project Structure
@@ -177,16 +182,18 @@ Hooman-Digital-LLP/
 
 ## Core Features
 
-*   **Semantic Classification**: Zero-shot intent detection using Llama 3.1 to extract category, urgency, and user sentiment.
+*   **Human-in-the-Loop (HITL)**: A dedicated approval workflow where operators can review, edit, and finalize AI-generated drafts.
+*   **Semantic Classification**: Zero-shot intent detection using Llama 3.2 to extract category, urgency, and user sentiment.
 *   **Grounded RAG Retrieval**: High-precision search across internal documentation using nomic-embed-text and ChromaDB.
 *   **Hybrid Orchestration**: A unique blend of LLM intelligence and deterministic Python-based "guardrail" logic.
 *   **Automated Escalation**: Intelligent routing that identifies legal threats or extreme frustration for immediate human intervention.
 *   **Security-First Design**: Local-first inference via Ollama ensures customer data never leaves the local environment.
 *   **Real-Time Dashboard**: Comprehensive Next.js interface for live log monitoring and performance visualization.
 *   **Evaluation Framework**: Built-in scripts to measure system accuracy and retrieval hit rates against ground-truth datasets.
-*   **Supabase Authentication**: Secure, enterprise-grade login system with persistent session management.
-*   **Role-Based Access Control (RBAC)**: Visibly different permissions and dashboard views for `Support Agents` and `Team Leads`.
+*   **LLM-as-a-Judge**: An automated qualitative evaluation suite grading responses on Tone, Accuracy, Empathy, and Clarity.
+*   **Supabase Authentication**: Secure login system with role-based permissions (Agent vs. Lead).
 *   **Business Intelligence (BI) Dashboard**: Real-time category distribution charts helping teams identify product pain points at a glance.
+*   **Prompt Management**: Centralized `backend/app/prompts/` directory for version-controlled instruction templates.
 
 ---
 
@@ -220,12 +227,16 @@ To maintain production-grade reliability, the system includes a dedicated evalua
 
 ## Evaluation Metrics
 
-| Metric | Score | Note |
+### 2. Qualitative (LLM-as-a-Judge)
+The system was evaluated by a peer-LLM (Judge) against a professional support rubric:
+
+| Metric | Score | Performance |
 | :--- | :--- | :--- |
-| **Classification Accuracy** | 82.0% | Success in identifying intent categories (Llama 3.2). |
-| **Urgency Accuracy** | 64.0% | Correctness of priority level detection. |
-| **Retrieval Hit Rate** | 78.0% | Percentage of queries where correct docs were found. |
-| **Workflow Decision Accuracy** | 54.0% | Correctness of the final business routing decision. |
+| **Professional Tone** | 5.0/5.0 | ██████████ (Perfect) |
+| **Resolution Quality** | 4.8/5.0 | █████████░ (High) |
+| **Clarity** | 4.0/5.0 | ████████░░ (Good) |
+| **Empathy** | 3.6/5.0 | ███████░░░ (Fair) |
+| **Fact Accuracy** | 3.2/5.0 | ██████░░░░ (Requires RAG refinement) |
 
 ---
 
